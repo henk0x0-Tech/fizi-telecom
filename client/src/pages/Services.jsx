@@ -6,6 +6,7 @@ import {
   Wifi, Building2, Shield, Camera, Cloud, Cpu,
   Headphones, Radio, ArrowRight, Filter
 } from 'lucide-react';
+import SEO from '../components/SEO';
 import '../styles/Services.css';
 
 function FadeIn({ children, delay = 0 }) {
@@ -46,6 +47,23 @@ const serviceCategoryImages = {
   'Security': 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?q=80&w=800&auto=format&fit=crop',
   'IT Infrastructure': 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800&auto=format&fit=crop',
 };
+
+const serviceNameImages = {
+  'Internet Setup': 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800&auto=format&fit=crop',
+  'Wi-Fi Setup': 'https://images.unsplash.com/photo-1520869562399-e772f042f422?q=80&w=800&auto=format&fit=crop',
+  'Router Installation': 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=800&auto=format&fit=crop',
+  'Network Troubleshooting': 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=800&auto=format&fit=crop',
+  'CCTV Installation': 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?q=80&w=800&auto=format&fit=crop',
+  'Desktop Setup': 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?q=80&w=800&auto=format&fit=crop',
+  'Software Installation': 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=800&auto=format&fit=crop',
+  'Laptop Repair': 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?q=80&w=800&auto=format&fit=crop',
+  'Device Maintenance': 'https://images.unsplash.com/photo-1562408590-e32931084e23?q=80&w=800&auto=format&fit=crop',
+  'Access Point Setup': 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop',
+  'Data Backup': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop',
+  'Technical Support': 'https://images.unsplash.com/photo-1534536281715-e28d76689b4d?q=80&w=800&auto=format&fit=crop',
+  'Website Development': 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop',
+  'Social Media Management': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop',
+};
 const defaultServiceImage = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop';
 
 export default function Services() {
@@ -76,6 +94,11 @@ export default function Services() {
 
   return (
     <div className="page-services">
+      <SEO
+        title="Comprehensive Technology & Telecom Services"
+        description="Explore Fizi Telecom's full range of services: fiber internet (FTTH), enterprise networking, CCTV surveillance, Wi-Fi & access point setup, cloud backup, website development, and 24/7 IT support in Fizi, DRC."
+        canonical="/services"
+      />
       {/* Hero */}
       <section className="page-hero">
         <div className="page-hero__bg" />
@@ -115,7 +138,7 @@ export default function Services() {
           <div className="services-api-grid">
             {services.map((service, i) => {
               const IconComp = iconMap[service.category] || Cloud;
-              const imgUrl = service.image || serviceCategoryImages[service.category] || defaultServiceImage;
+              const imgUrl = service.image || serviceNameImages[service.name] || serviceCategoryImages[service.category] || defaultServiceImage;
               return (
                 <FadeIn key={service._id || service.id || i} delay={i * 0.04}>
                   <div className="service-api-card" style={{ padding: 0, overflow: 'hidden' }}>

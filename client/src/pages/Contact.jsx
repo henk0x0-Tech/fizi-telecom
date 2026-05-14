@@ -4,6 +4,7 @@ import {
   Phone, Mail, MapPin, Clock, MessageCircle,
   Send, User, Building, FileText, ArrowRight
 } from 'lucide-react';
+import SEO from '../components/SEO';
 import '../styles/Services.css';
 import '../styles/Contact.css';
 
@@ -34,25 +35,45 @@ export default function Contact() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
+
+    // Validate required fields
+    if (!formData.name.trim() || !formData.email.trim() || !formData.subject.trim() || !formData.message.trim()) {
+      setError('Please fill all required fields before sending.');
+      return;
+    }
+
     setLoading(true);
-    try {
-      const response = await fetch('http://localhost:5000/api/contact/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-      if (!response.ok) throw new Error('Failed to submit form');
+
+    // Build WhatsApp message
+    const lines = [
+      `🔵 *New Inquiry — Fizi Telecom*`,
+      `━━━━━━━━━━━━━━━━━━`,
+      `👤 *Full Name:* ${formData.name}`,
+      `📧 *Email:* ${formData.email}`,
+      formData.phone ? `📱 *Phone:* ${formData.phone}` : null,
+      formData.company ? `🏢 *Company:* ${formData.company}` : null,
+      `📋 *Inquiry Type:* ${formData.inquiryType}`,
+      `📌 *Subject:* ${formData.subject}`,
+      `━━━━━━━━━━━━━━━━━━`,
+      `💬 *Message:*`,
+      formData.message,
+      `━━━━━━━━━━━━━━━━━━`,
+      `_Sent via Fizi Telecom Website_`,
+    ].filter(Boolean).join('\n');
+
+    const waUrl = `https://wa.me/243976359001?text=${encodeURIComponent(lines)}`;
+
+    // Brief loading animation then redirect
+    setTimeout(() => {
+      setLoading(false);
       setSubmitted(true);
+      window.open(waUrl, '_blank');
       setFormData(initialFormData);
       setTimeout(() => setSubmitted(false), 5000);
-    } catch (err) {
-      setError(err.message || 'An error occurred. Please try again.');
-    } finally {
-      setLoading(false);
-    }
+    }, 800);
   };
 
   const contactInfo = [
@@ -64,6 +85,11 @@ export default function Contact() {
 
   return (
     <div className="page-contact">
+      <SEO
+        title="Contact Us — Get in Touch with Fizi Telecom"
+        description="Contact Fizi Telecom for fiber internet, enterprise networking, CCTV, and IT support. Call +243 976359001 or send us a message via WhatsApp. Located in Baraka Fizi, Av Ibase No 38."
+        canonical="/contact"
+      />
       <section className="page-hero">
         <div className="page-hero__bg" />
         <div className="container page-hero__content">
@@ -90,7 +116,7 @@ export default function Contact() {
               {submitted && (
                 <motion.div className="form-alert form-alert--success"
                   initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-                >✓ Message sent successfully! We'll be in touch soon.</motion.div>
+                >✓ Message opened in WhatsApp! Just tap Send to deliver it.</motion.div>
               )}
               {error && (
                 <motion.div className="form-alert form-alert--error"
@@ -141,8 +167,12 @@ export default function Contact() {
                   <textarea id="message" name="message" value={formData.message} onChange={handleChange} required placeholder="Tell us about your project..." rows={5}></textarea>
                 </div>
                 <div className="form-actions">
-                  <button type="submit" className="form-submit" disabled={loading}>
-                    {loading ? 'Sending...' : (<><Send size={16} /> Send Message</>)}
+                  <button type="submit" className="form-submit form-submit--whatsapp" disabled={loading}>
+                    {loading ? (
+                      <><span className="wa-spinner" /> Opening WhatsApp...</>
+                    ) : (
+                      <><MessageCircle size={18} /> Send via WhatsApp</>
+                    )}
                   </button>
                   <button type="button" className="form-clear" onClick={() => setFormData(initialFormData)}>Clear</button>
                 </div>

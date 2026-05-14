@@ -1,8 +1,5 @@
-import React from 'react';
-import HeroSection from "./a-modern-hero-section";
+import { Button } from "@/components/ui/rainbow-borders-button";
 
-const DemoOne = () => {
-  return <HeroSection />;
-};
-
-export { DemoOne };
+export default function DemoOne() {
+  return <Button />;
+}

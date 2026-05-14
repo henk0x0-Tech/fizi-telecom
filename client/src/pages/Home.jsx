@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import {
   Wifi, Shield, Cloud, Camera, Server, Cpu,
   Headphones, Radio, ArrowRight, CheckCircle2,
@@ -9,6 +9,7 @@ import {
   ToggleLeft, ToggleRight, Sparkles, Activity, User
 } from 'lucide-react';
 import heroBg from '../assets/hero-bg.jpeg';
+import SEO from '../components/SEO';
 import '../styles/Home.css';
 
 /* ── Fade-in wrapper ── */
@@ -130,15 +131,34 @@ const stats = [
 ];
 
 const solutions = [
-  { icon: Building2, title: 'Business Connectivity', desc: 'Enterprise-grade connectivity solutions with dedicated fiber links, SD-WAN orchestration, and multi-site networking for mission-critical operations.', features: ['Dedicated Fiber', 'SD-WAN', 'Multi-Site VPN', 'QoS Management'] },
-  { icon: HomeIcon, title: 'Smart Home Integration', desc: 'Seamless home automation platforms connecting lighting, security, climate, entertainment, and energy management into a unified ecosystem.', features: ['Home Automation', 'Smart Security', 'Voice Control', 'Energy Management'] },
-  { icon: Globe, title: 'Smart City Infrastructure', desc: 'End-to-end smart city deployments integrating IoT sensors, intelligent traffic management, environmental monitoring, and connected public services.', features: ['IoT Sensor Networks', 'Traffic Management', 'Environmental Monitoring', 'Public Wi-Fi'] },
+  { icon: Building2, title: 'Business Connectivity', image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1600&auto=format&fit=crop', desc: 'Enterprise-grade connectivity solutions with dedicated fiber links, SD-WAN orchestration, and multi-site networking for mission-critical operations.', features: ['Dedicated Fiber', 'SD-WAN', 'Multi-Site VPN', 'QoS Management'] },
+  { icon: HomeIcon, title: 'Smart Home Integration', image: 'https://images.unsplash.com/photo-1558036117-15d82a90b9b1?q=80&w=1600&auto=format&fit=crop', desc: 'Seamless home automation platforms connecting lighting, security, climate, entertainment, and energy management into a unified ecosystem.', features: ['Home Automation', 'Smart Security', 'Voice Control', 'Energy Management'] },
+  { icon: Globe, title: 'Smart City Infrastructure', image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=1600&auto=format&fit=crop', desc: 'End-to-end smart city deployments integrating IoT sensors, intelligent traffic management, environmental monitoring, and connected public services.', features: ['IoT Sensor Networks', 'Traffic Management', 'Environmental Monitoring', 'Public Wi-Fi'] },
 ];
 
 const testimonials = [
-  { name: 'Marcel Kabongo', role: 'CTO, East Africa Digital', quote: 'Fizi Telecom transformed our entire network infrastructure. The uptime and speed improvements have been remarkable for our business operations.', rating: 5 },
-  { name: 'Sarah Mutoni', role: 'Director, Lakeside Hospitality Group', quote: 'Their CCTV and surveillance solutions gave us complete peace of mind. The advanced monitoring and rapid response times are exactly what we needed.', rating: 5 },
-  { name: 'Jean-Pierre Amani', role: 'CEO, Amani Industries', quote: 'From fiber installation to managed services, Fizi Telecom has been our single trusted partner for all technology needs. Exceptional quality.', rating: 5 },
+  { name: 'Marcel Kabongo', role: 'CTO, East Africa Digital', quote: 'Fizi Telecom transformed our entire network infrastructure. The uptime and speed improvements have been remarkable for our business operations.', rating: 5, avatar: 'https://i.pravatar.cc/150?img=11' },
+  { name: 'Sarah Mutoni', role: 'Director, Lakeside Hospitality Group', quote: 'Their CCTV and surveillance solutions gave us complete peace of mind. The advanced monitoring and rapid response times are exactly what we needed.', rating: 5, avatar: 'https://i.pravatar.cc/150?img=5' },
+  { name: 'Jean-Pierre Amani', role: 'CEO, Amani Industries', quote: 'From fiber installation to managed services, Fizi Telecom has been our single trusted partner for all technology needs. Exceptional quality.', rating: 5, avatar: 'https://i.pravatar.cc/150?img=14' },
+];
+
+const premiumBrands = [
+  { name: 'Google', icon: 'https://cdn.simpleicons.org/google/4285F4' },
+  { name: 'Microsoft', icon: 'https://cdn.simpleicons.org/microsoft/00A4EF' },
+  { name: 'Apple', icon: 'https://cdn.simpleicons.org/apple/555555' },
+  { name: 'Amazon', icon: 'https://cdn.simpleicons.org/amazon/FF9900' },
+  { name: 'Netflix', icon: 'https://cdn.simpleicons.org/netflix/E50914' },
+  { name: 'Adobe', icon: 'https://cdn.simpleicons.org/adobe/FF0000' },
+  { name: 'Spotify', icon: 'https://cdn.simpleicons.org/spotify/1DB954' },
+  { name: 'Meta', icon: 'https://cdn.simpleicons.org/meta/0468FF' },
+  { name: 'Samsung', icon: 'https://cdn.simpleicons.org/samsung/1428A0' },
+  { name: 'Tesla', icon: 'https://cdn.simpleicons.org/tesla/CC0000' },
+  { name: 'Nike', icon: 'https://cdn.simpleicons.org/nike/555555' },
+  { name: 'YouTube', icon: 'https://cdn.simpleicons.org/youtube/FF0000' },
+  { name: 'Instagram', icon: 'https://cdn.simpleicons.org/instagram/E4405F' },
+  { name: 'Discord', icon: 'https://cdn.simpleicons.org/discord/5865F2' },
+  { name: 'PayPal', icon: 'https://cdn.simpleicons.org/paypal/00457C' },
+  { name: 'OpenAI', icon: 'https://cdn.simpleicons.org/openai/412991' },
 ];
 
 const plans = [
@@ -146,16 +166,97 @@ const plans = [
   { name: 'Business', price: 149, desc: 'For growing companies', features: ['500 Mbps Fiber Internet', 'Advanced Security Suite', '24/7 Priority Support', 'Enterprise SLA', '5 Static IPs', 'Cloud Backup 1TB', 'SD-WAN Ready'], popular: true },
   { name: 'Enterprise', price: null, desc: 'Custom enterprise solutions', features: ['Dedicated Fiber (1Gbps+)', 'Full SOC & SIEM', 'Dedicated Account Manager', '99.99% SLA', 'Unlimited Static IPs', 'Multi-Site Networking', 'Custom Integrations'], popular: false },
 ];
+const heroSlides = [
+  {
+    id: 's1',
+    badge: 'Fiber Internet',
+    title: 'Fiber Internet &',
+    accent: 'Connectivity Solutions',
+    subtitle: 'Ultra-fast fiber-optic connectivity with symmetric gigabit speeds and guaranteed bandwidth for homes and businesses.',
+    bgImage: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1920&auto=format&fit=crop',
+  },
+  {
+    id: 's2',
+    badge: 'Enterprise Networking',
+    title: 'Enterprise Networking &',
+    accent: 'Router Infrastructure',
+    subtitle: 'Custom-designed network architectures including SD-WAN, MPLS, and multi-site connectivity for large organizations.',
+    bgImage: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=1920&auto=format&fit=crop',
+  },
+  {
+    id: 's3',
+    badge: 'Smart Security',
+    title: 'CCTV Security &',
+    accent: 'Smart Surveillance',
+    subtitle: 'Professional IP surveillance networks with AI-powered analytics, cloud-based monitoring, and thermal imaging.',
+    bgImage: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?q=80&w=1920&auto=format&fit=crop',
+  },
+  {
+    id: 's4',
+    badge: 'Wireless Solutions',
+    title: 'Wi-Fi & Access Point',
+    accent: 'Installation',
+    subtitle: 'Point-to-point and seamless wireless coverage eliminating dead zones with carrier-grade reliability.',
+    bgImage: 'https://images.unsplash.com/photo-1563770660309-8d19760775d7?q=80&w=1920&auto=format&fit=crop',
+  },
+  {
+    id: 's5',
+    badge: 'Cloud & Backup',
+    title: 'Cloud, Data Backup &',
+    accent: 'IT Infrastructure',
+    subtitle: 'Secure your operations with robust cloud architectures, automated backups, and scalable IT infrastructure.',
+    bgImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1920&auto=format&fit=crop',
+  },
+  {
+    id: 's6',
+    badge: 'Digital Presence',
+    title: 'Website Development &',
+    accent: 'Digital Solutions',
+    subtitle: 'Stunning, conversion-focused websites that establish your digital presence and drive results.',
+    bgImage: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1920&auto=format&fit=crop',
+  },
+  {
+    id: 's7',
+    badge: 'IT Support',
+    title: 'Technical Support &',
+    accent: 'Device Maintenance',
+    subtitle: 'Proactive monitoring, help desk support, patch management, and complete IT operations outsourcing.',
+    bgImage: 'https://images.unsplash.com/photo-1534536281715-e28d76689b4d?q=80&w=1920&auto=format&fit=crop',
+  }
+];
 
 export default function Home() {
   const [billingCycle, setBillingCycle] = useState('monthly');
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="home-page">
+      <SEO
+        title="Fiber Internet, Enterprise Networking & IT Solutions"
+        description="Fizi Telecom delivers fiber internet (FTTH), enterprise networking, CCTV surveillance, Wi-Fi setup, cloud backup, website development, and managed IT services in Fizi, DRC. Call +243 976359001."
+        canonical="/"
+      />
 
       {/* ═══ HERO ═══ */}
       <section className="hero" id="hero">
-        <div className="hero__bg-image" style={{ backgroundImage: `url(${heroBg})` }} />
+        <AnimatePresence>
+          <motion.div
+            key={currentSlide}
+            className="hero__bg-image"
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
+            style={{ backgroundImage: `url(${heroSlides[currentSlide].bgImage})`, position: 'absolute', inset: 0 }}
+          />
+        </AnimatePresence>
         <div className="hero__bg-overlay" />
         <NetworkCanvas />
         <div className="hero__orb hero__orb--1" />
@@ -164,29 +265,30 @@ export default function Home() {
         <div className="hero__grid-overlay" />
 
         <div className="hero__content container">
-          <motion.div className="hero__badge"
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-          >
-            <Sparkles size={14} /> Next-Gen Telecom Infrastructure
-          </motion.div>
+          <div style={{ minHeight: '260px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', marginBottom: '24px' }}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSlide}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.4 }}
+              >
+                <div className="hero__badge">
+                  <Sparkles size={14} /> {heroSlides[currentSlide].badge}
+                </div>
 
-          <motion.h1 className="hero__title"
-            initial={{ opacity: 0, y: 36 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.75, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          >
-            Advanced Telecom &<br />
-            <span className="hero__title-accent">Infrastructure Solutions</span><br />
-            for the Digital Future
-          </motion.h1>
+                <h1 className="hero__title">
+                  {heroSlides[currentSlide].title}<br />
+                  <span className="hero__title-accent">{heroSlides[currentSlide].accent}</span>
+                </h1>
 
-          <motion.p className="hero__subtitle"
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.45 }}
-          >
-            Delivering fiber internet, enterprise networking, cybersecurity, cloud solutions,
-            and smart infrastructure with unmatched reliability and innovation.
-          </motion.p>
+                <p className="hero__subtitle">
+                  {heroSlides[currentSlide].subtitle}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
           <motion.div className="hero__actions"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
@@ -341,13 +443,31 @@ export default function Home() {
                     </div>
                     <Link to="/services" className="sol-card__link">Explore Solution <ArrowRight size={15} /></Link>
                   </div>
-                  <div className="sol-card__visual">
-                    <div className="sol-card__visual-ring">
-                      <sol.icon size={56} strokeWidth={0.8} />
-                    </div>
+                  <div className="sol-card__visual" style={{ padding: 0, borderRadius: 'var(--radius-xl)', overflow: 'hidden', position: 'relative' }}>
+                    <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${sol.image})`, backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform 0.5s ease' }} className="sol-card__img-bg" />
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(10,25,47,0.3), rgba(0,0,0,0.7))' }} />
                   </div>
                 </div>
               </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ TRUSTED BRANDS ═══ */}
+      <section className="brands-section">
+        <div className="container">
+          <FadeIn>
+            <p className="brands-title">Trusted by Top Brands & Enterprises</p>
+          </FadeIn>
+        </div>
+        <div className="brands-marquee">
+          <div className="brands-marquee-track">
+            {[...premiumBrands, ...premiumBrands].map((brand, i) => (
+              <div key={i} className="brand-logo-item">
+                <img src={brand.icon} alt={brand.name} className="brand-logo-img" />
+                <span className="brand-logo-name">{brand.name}</span>
+              </div>
             ))}
           </div>
         </div>
@@ -372,7 +492,7 @@ export default function Home() {
                   </div>
                   <p className="testi-card__quote">"{t.quote}"</p>
                   <div className="testi-card__author">
-                    <div className="testi-card__avatar">{t.name.split(' ').map(n => n[0]).join('')}</div>
+                    <img src={t.avatar} alt={t.name} className="testi-card__avatar" />
                     <div>
                       <div className="testi-card__name">{t.name}</div>
                       <div className="testi-card__role">{t.role}</div>

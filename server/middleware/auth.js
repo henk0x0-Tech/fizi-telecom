@@ -5,7 +5,7 @@ const TOKEN_EXPIRY = '24h';
 
 // Admin credentials — change these in production
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'FiziAdmin@2026';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Fizitecom@2026';
 
 export const login = (req, res) => {
   const { username, password } = req.body;

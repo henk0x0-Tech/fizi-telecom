@@ -1,229 +1,114 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import AdminLogin from '../components/admin/AdminLogin';
+import AdminSidebar from '../components/admin/AdminSidebar';
+import DashboardTab from '../components/admin/DashboardTab';
+import HeroTab from '../components/admin/HeroTab';
+import ListEditorTab from '../components/admin/ListEditorTab';
+import ContactTab from '../components/admin/ContactTab';
+import { getToken, clearToken, verifyAuth, apiGet, apiPut } from '../utils/api';
 import '../styles/Admin.css';
 
-const API_URL = 'http://localhost:5000/api';
-
 export default function Admin() {
-  const [products, setProducts] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingProduct, setEditingProduct] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const fileInputRef = useRef(null);
+  const [user, setUser] = useState(null);
+  const [checking, setChecking] = useState(true);
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [siteContent, setSiteContent] = useState(null);
 
-  const initialForm = {
-    name: '', brand: '', category: 'Laptops', 
-    price: '', description: '', availability: 'In Stock', image: ''
-  };
-  const [formData, setFormData] = useState(initialForm);
-
+  // ── On mount: verify existing token ──────────────────────────────
   useEffect(() => {
-    fetchProducts();
+    const token = getToken();
+    if (!token) {
+      setChecking(false);
+      return;
+    }
+    verifyAuth().then(valid => {
+      if (valid) {
+        // Decode username from token payload
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          setUser({ username: payload.username, role: payload.role });
+        } catch {
+          setUser({ username: 'Admin', role: 'admin' });
+        }
+      } else {
+        clearToken();
+      }
+      setChecking(false);
+    });
   }, []);
 
-  const fetchProducts = async () => {
+  // ── Fetch site content when logged in ────────────────────────────
+  useEffect(() => {
+    if (!user) return;
+    apiGet('/site-content').then(setSiteContent).catch(() => {});
+  }, [user]);
+
+  const handleLogin = (userData) => setUser(userData);
+  const handleLogout = () => { clearToken(); setUser(null); setActiveTab('dashboard'); };
+
+  const handleSaveContent = async (key, value) => {
+    const updated = { ...siteContent, [key]: value };
     try {
-      const res = await fetch(`${API_URL}/products`);
-      const data = await res.json();
-      setProducts(data);
+      await apiPut('/site-content', updated);
+      setSiteContent(updated);
     } catch (err) {
-      console.error('Failed to fetch products', err);
+      alert('Failed to save: ' + err.message);
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
+  // ── Loading screen while verifying token ─────────────────────────
+  if (checking) {
+    return (
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'center', minHeight:'100vh', background:'#0a192f', color:'#00BFFF', fontFamily:'Inter,sans-serif' }}>
+        <div style={{ textAlign:'center' }}>
+          <div style={{ width:40, height:40, border:'3px solid rgba(0,191,255,0.2)', borderTopColor:'#00BFFF', borderRadius:'50%', animation:'spin 0.8s linear infinite', margin:'0 auto 16px' }} />
+          <p>Verifying session...</p>
+          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        </div>
+      </div>
+    );
+  }
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  // ── Login screen ──────────────────────────────────────────────────
+  if (!user) {
+    return <AdminLogin onLogin={handleLogin} />;
+  }
 
-    const data = new FormData();
-    data.append('image', file);
-
-    try {
-      setLoading(true);
-      const res = await fetch(`${API_URL}/upload`, {
-        method: 'POST',
-        body: data,
-      });
-      const result = await res.json();
-      if (res.ok) {
-        setFormData(prev => ({ ...prev, image: `http://localhost:5000${result.imageUrl}` }));
-      } else {
-        alert(result.error || 'Upload failed');
-      }
-    } catch (err) {
-      alert('Upload failed');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const openModal = (product = null) => {
-    if (product) {
-      setEditingProduct(product);
-      setFormData(product);
-    } else {
-      setEditingProduct(null);
-      setFormData(initialForm);
-    }
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setEditingProduct(null);
-    setFormData(initialForm);
-    if (fileInputRef.current) fileInputRef.current.value = '';
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const url = editingProduct 
-        ? `${API_URL}/products/${editingProduct._id}` 
-        : `${API_URL}/products`;
-        
-      const method = editingProduct ? 'PUT' : 'POST';
-
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-
-      if (res.ok) {
-        await fetchProducts();
-        closeModal();
-      } else {
-        const err = await res.json();
-        alert(err.error || 'Failed to save product');
-      }
-    } catch (err) {
-      alert('An error occurred');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this product?')) return;
-    
-    try {
-      const res = await fetch(`${API_URL}/products/${id}`, { method: 'DELETE' });
-      if (res.ok) {
-        await fetchProducts();
-      } else {
-        alert('Failed to delete');
-      }
-    } catch (err) {
-      alert('An error occurred');
+  // ── Admin dashboard ───────────────────────────────────────────────
+  const renderTab = () => {
+    switch (activeTab) {
+      case 'dashboard':
+        return <DashboardTab siteContent={siteContent} onNavigate={setActiveTab} />;
+      case 'hero':
+        return <HeroTab siteContent={siteContent} onSave={handleSaveContent} />;
+      case 'services':
+        return <ListEditorTab title="Services" apiKey="services" endpoint="/services" />;
+      case 'products':
+        return <ListEditorTab title="Products" apiKey="products" endpoint="/products" />;
+      case 'plans':
+        return <ListEditorTab title="Pricing Plans" apiKey="plans" endpoint="/plans" siteContent={siteContent} onSave={handleSaveContent} />;
+      case 'testimonials':
+        return <ListEditorTab title="Testimonials" apiKey="testimonials" siteContent={siteContent} onSave={handleSaveContent} />;
+      case 'partners':
+        return <ListEditorTab title="Partners" apiKey="partners" siteContent={siteContent} onSave={handleSaveContent} />;
+      case 'contact':
+        return <ContactTab siteContent={siteContent} onSave={handleSaveContent} />;
+      default:
+        return <DashboardTab siteContent={siteContent} onNavigate={setActiveTab} />;
     }
   };
 
   return (
-    <div className="simple-admin">
-      <div className="simple-admin__header">
-        <h1>Product Management</h1>
-        <button className="simple-btn" onClick={() => openModal()}>+ Add Product</button>
-      </div>
-
-      <table className="simple-table">
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Brand</th>
-            <th>Category</th>
-            <th>Price</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map(p => (
-            <tr key={p._id || p.id}>
-              <td>
-                <img src={p.image?.startsWith('http') ? p.image : `http://localhost:5501${p.image}`} alt={p.name} />
-              </td>
-              <td>{p.name}</td>
-              <td>{p.brand}</td>
-              <td>{p.category}</td>
-              <td>${p.price}</td>
-              <td>{p.availability}</td>
-              <td>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <button className="simple-btn" onClick={() => openModal(p)}>Edit</button>
-                  {p._id && (
-                    <button className="simple-btn simple-btn--danger" onClick={() => handleDelete(p._id)}>Delete</button>
-                  )}
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {isModalOpen && (
-        <div className="simple-modal-overlay">
-          <div className="simple-modal">
-            <h2>{editingProduct ? 'Edit Product' : 'Add New Product'}</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="simple-form-group">
-                <label>Product Name</label>
-                <input required type="text" name="name" value={formData.name} onChange={handleInputChange} />
-              </div>
-              <div className="simple-form-group">
-                <label>Brand</label>
-                <input required type="text" name="brand" value={formData.brand} onChange={handleInputChange} />
-              </div>
-              <div className="simple-form-group">
-                <label>Category</label>
-                <select name="category" value={formData.category} onChange={handleInputChange}>
-                  <option>Laptops</option>
-                  <option>Desktops</option>
-                  <option>Printers</option>
-                  <option>Desktop Accessories</option>
-                  <option>Networking Equipment</option>
-                </select>
-              </div>
-              <div className="simple-form-group">
-                <label>Price ($)</label>
-                <input required type="number" name="price" value={formData.price} onChange={handleInputChange} />
-              </div>
-              <div className="simple-form-group">
-                <label>Availability</label>
-                <select name="availability" value={formData.availability} onChange={handleInputChange}>
-                  <option>In Stock</option>
-                  <option>Low Stock</option>
-                  <option>Out of Stock</option>
-                </select>
-              </div>
-              <div className="simple-form-group">
-                <label>Description</label>
-                <textarea rows="3" name="description" value={formData.description} onChange={handleInputChange}></textarea>
-              </div>
-              
-              <div className="simple-form-group">
-                <label>Product Image</label>
-                <input type="file" accept="image/*" onChange={handleImageUpload} ref={fileInputRef} />
-                {loading && <p>Uploading...</p>}
-                {formData.image && (
-                  <img src={formData.image?.startsWith('http') ? formData.image : `http://localhost:5501${formData.image}`} alt="Preview" className="image-preview" />
-                )}
-              </div>
-
-              <div className="simple-modal-actions">
-                <button type="button" className="simple-btn" style={{ background: '#94a3b8' }} onClick={closeModal}>Cancel</button>
-                <button type="submit" className="simple-btn" disabled={loading}>Save Product</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+    <div className="admin-layout">
+      <AdminSidebar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        user={user}
+        onLogout={handleLogout}
+      />
+      <main className="admin-main">
+        {renderTab()}
+      </main>
     </div>
   );
 }

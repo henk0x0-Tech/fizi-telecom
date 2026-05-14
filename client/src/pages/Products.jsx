@@ -4,6 +4,7 @@ import { motion, useInView } from 'framer-motion';
 import {
   Laptop, Monitor, Printer, Keyboard, Filter, ArrowRight, Package
 } from 'lucide-react';
+import SEO from '../components/SEO';
 import '../styles/Services.css';
 import '../styles/Products.css';
 
@@ -41,6 +42,15 @@ const categoryImages = {
   'Printers': 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?q=80&w=800&auto=format&fit=crop',
   'Desktop Accessories': 'https://images.unsplash.com/photo-1595225476474-87563907a212?q=80&w=800&auto=format&fit=crop',
 };
+
+const productNameImages = {
+  'Dell UltraSharp 27" Monitor': 'https://images.unsplash.com/photo-1586210579191-33b45e38fa2c?q=80&w=800&auto=format&fit=crop',
+  'Keychron Q1 Pro Keyboard': 'https://images.unsplash.com/photo-1555680202-c86f0e12f086?q=80&w=800&auto=format&fit=crop',
+  'APC Back-UPS Pro 1500VA': 'https://images.unsplash.com/photo-1580828343064-fde4cad202d0?q=80&w=800&auto=format&fit=crop',
+  'Sony WH-1000XM5 Headphones': 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?q=80&w=800&auto=format&fit=crop',
+  'Logitech MX Master 3S': 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?q=80&w=800&auto=format&fit=crop',
+};
+
 const defaultProductImage = 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop';
 
 export default function Products() {
@@ -97,6 +107,11 @@ export default function Products() {
 
   return (
     <div className="page-products">
+      <SEO
+        title="Premium Technology Hardware & IT Products"
+        description="Shop Fizi Telecom's premium hardware catalog: laptops, desktops, monitors, keyboards, UPS systems, wireless headphones, and networking accessories. Quality technology products delivered in Fizi, DRC."
+        canonical="/products"
+      />
       <section className="page-hero">
         <div className="page-hero__bg" />
         <div className="container page-hero__content">
@@ -153,7 +168,7 @@ export default function Products() {
           <div className="products-grid">
             {displayedProducts.map((product, i) => {
               const IconComp = iconMap[product.category] || Package;
-              const imgUrl = product.image || categoryImages[product.category] || defaultProductImage;
+              const imgUrl = product.image || productNameImages[product.name] || categoryImages[product.category] || defaultProductImage;
               return (
                 <FadeIn key={product._id || product.id || i} delay={i * 0.04}>
                   <div className="product-card" style={{ padding: 0, overflow: 'hidden' }}>

@@ -12,6 +12,7 @@ import servicesRoutes from './routes/services.js';
 import productsRoutes from './routes/products.js';
 import contactRoutes from './routes/contact.js';
 import uploadRoutes from './routes/upload.js';
+import authRoutes from './routes/auth.js';
 import path from 'path';
 
 const app = express();
@@ -64,6 +65,7 @@ const connectDB = async () => {
 connectDB();
 
 // API Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/company', companyRoutes);
 app.use('/api/services', servicesRoutes);
 app.use('/api/products', productsRoutes);

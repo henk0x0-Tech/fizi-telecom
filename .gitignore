@@ -4,4 +4,14 @@ dist/
 build/
 .env
 .DS_Store
-node_modules
+
+# Logs
+*.log
+dev-error.log
+dev-output.log
+
+# Archive (old static site files)
+_archive/
+
+# OS files
+Thumbs.db
