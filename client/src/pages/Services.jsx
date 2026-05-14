@@ -36,6 +36,8 @@ const featuredServices = [
   { icon: Camera, title: 'CCTV Installation', desc: 'Professional security camera systems, IP surveillance networks, and cloud-based monitoring solutions.', color: '#059669' },
 ];
 
+import { defaultServices } from '../fallbackData';
+
 export default function Services() {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -51,10 +53,10 @@ export default function Services() {
         : 'http://localhost:5000/api/services';
       const response = await fetch(url);
       const data = await response.json();
-      setServices(Array.isArray(data) ? data : []);
+      setServices(Array.isArray(data) ? data : (filter ? defaultServices.filter(s => s.category === filter) : defaultServices));
     } catch (error) {
-      console.error('Error fetching services:', error);
-      setServices([]);
+      console.error('Error fetching services, using fallback data:', error);
+      setServices(filter ? defaultServices.filter(s => s.category === filter) : defaultServices);
     } finally {
       setLoading(false);
     }

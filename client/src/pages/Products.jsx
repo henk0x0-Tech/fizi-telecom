@@ -37,6 +37,8 @@ const featured = [
   { icon: Laptop, title: 'Computing Hardware', desc: 'Desktop computers, laptops, workstations, and enterprise computing solutions.', color: '#D97706' },
 ];
 
+import { defaultProducts } from '../fallbackData';
+
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -57,10 +59,10 @@ export default function Products() {
         : 'http://localhost:5000/api/products';
       const response = await fetch(url);
       const data = await response.json();
-      setProducts(Array.isArray(data) ? data.filter(p => !isDataCenterProduct(p)) : []);
+      setProducts(Array.isArray(data) ? data.filter(p => !isDataCenterProduct(p)) : (filter ? defaultProducts.filter(p => p.category === filter && !isDataCenterProduct(p)) : defaultProducts.filter(p => !isDataCenterProduct(p))));
     } catch (error) {
-      console.error('Error fetching products:', error);
-      setProducts([]);
+      console.error('Error fetching products, using fallback data:', error);
+      setProducts(filter ? defaultProducts.filter(p => p.category === filter && !isDataCenterProduct(p)) : defaultProducts.filter(p => !isDataCenterProduct(p)));
     } finally {
       setLoading(false);
     }
