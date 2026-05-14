@@ -66,13 +66,15 @@ const defaultProducts = [
 export const getAllProducts = async (req, res) => {
   try {
     const { category } = req.query;
-    let products = defaultProducts;
+    let products = [...defaultProducts];
     
     if (isDatabaseConnected()) {
-      const query = category ? { category } : {};
-      const dbProducts = await Product.find(query);
+      // Fetch ALL products from DB to properly merge
+      const dbProducts = await Product.find({});
       if (dbProducts.length > 0) {
-        products = dbProducts;
+        const dbProductNames = new Set(dbProducts.map(p => p.name));
+        const missingDefaultProducts = defaultProducts.filter(p => !dbProductNames.has(p.name));
+        products = [...dbProducts, ...missingDefaultProducts];
       }
     }
     

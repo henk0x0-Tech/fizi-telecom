@@ -19,13 +19,15 @@ const defaultServices = [
 export const getAllServices = async (req, res) => {
   try {
     const { category } = req.query;
-    let services = defaultServices;
+    let services = [...defaultServices];
     
     if (isDatabaseConnected()) {
-      const query = category ? { category } : {};
-      const dbServices = await Service.find(query);
+      // Fetch ALL services from DB to properly merge
+      const dbServices = await Service.find({});
       if (dbServices.length > 0) {
-        services = dbServices;
+        const dbServiceNames = new Set(dbServices.map(s => s.name));
+        const missingDefaultServices = defaultServices.filter(s => !dbServiceNames.has(s.name));
+        services = [...dbServices, ...missingDefaultServices];
       }
     }
     
