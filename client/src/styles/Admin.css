@@ -1,0 +1,126 @@
+/* ══════════════════════════════════════
+   SIMPLE ADMIN PANEL CSS
+   ══════════════════════════════════════ */
+.simple-admin {
+  padding: 40px;
+  background: #f8fafc;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+.simple-admin__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.simple-admin__header h1 {
+  font-size: 24px;
+  color: #0f172a;
+}
+
+.simple-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.simple-btn:hover { background: #2563eb; }
+.simple-btn--danger { background: #ef4444; }
+.simple-btn--danger:hover { background: #dc2626; }
+
+.simple-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.simple-table th, .simple-table td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.simple-table th {
+  background: #f1f5f9;
+  font-weight: 600;
+  color: #475569;
+}
+
+.simple-table img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.simple-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.simple-modal {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 500px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.simple-modal h2 { margin-top: 0; margin-bottom: 20px; }
+
+.simple-form-group {
+  margin-bottom: 15px;
+}
+
+.simple-form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.simple-form-group input, 
+.simple-form-group select, 
+.simple-form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-family: inherit;
+}
+
+.simple-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.image-preview {
+  margin-top: 10px;
+  width: 100%;
+  max-height: 150px;
+  object-fit: contain;
+  border: 1px dashed #cbd5e1;
+  border-radius: 6px;
+  padding: 5px;
+}

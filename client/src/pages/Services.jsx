@@ -38,6 +38,16 @@ const featuredServices = [
 
 import { defaultServices } from '../fallbackData';
 
+const serviceCategoryImages = {
+  'Connectivity': 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop',
+  'WiFi & Smart Solutions': 'https://images.unsplash.com/photo-1563770660309-8d19760775d7?q=80&w=800&auto=format&fit=crop',
+  'Enterprise Networking': 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=800&auto=format&fit=crop',
+  'Support & Maintenance': 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=800&auto=format&fit=crop',
+  'Security': 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?q=80&w=800&auto=format&fit=crop',
+  'IT Infrastructure': 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800&auto=format&fit=crop',
+};
+const defaultServiceImage = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop';
+
 export default function Services() {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -105,18 +115,26 @@ export default function Services() {
           <div className="services-api-grid">
             {services.map((service, i) => {
               const IconComp = iconMap[service.category] || Cloud;
+              const imgUrl = service.image || serviceCategoryImages[service.category] || defaultServiceImage;
               return (
                 <FadeIn key={service._id || service.id || i} delay={i * 0.04}>
-                  <div className="service-api-card">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                      <div className="service-api-card__icon" style={{ margin: 0 }}><IconComp size={22} /></div>
-                      <span style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-gray)', background: 'rgba(255,255,255,0.05)', padding: '4px 8px', borderRadius: '4px' }}>{service.category}</span>
+                  <div className="service-api-card" style={{ padding: 0, overflow: 'hidden' }}>
+                    <div style={{ width: '100%', height: '180px', backgroundImage: `url(${imgUrl})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
+                      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,25,47,0.9), transparent)' }} />
+                      <div style={{ position: 'absolute', bottom: '16px', left: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div className="service-api-card__icon" style={{ margin: 0, background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(4px)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}><IconComp size={20} /></div>
+                        <span style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#fff', background: 'rgba(0,191,255,0.2)', backdropFilter: 'blur(4px)', padding: '4px 8px', borderRadius: '4px', border: '1px solid rgba(0,191,255,0.3)' }}>{service.category}</span>
+                      </div>
                     </div>
-                    <h3 className="service-api-card__title">{service.name}</h3>
-                    <p className="service-api-card__desc">{service.description}</p>
-                    {service.pricing && (
-                      <div className="service-api-card__price">From ${service.pricing.startingPrice}</div>
-                    )}
+                    <div style={{ padding: '24px' }}>
+                      <h3 className="service-api-card__title">{service.name}</h3>
+                      <p className="service-api-card__desc">{service.description}</p>
+                      {service.pricing && (
+                        <div className="service-api-card__price" style={{ marginTop: '16px', color: '#00BFFF', fontWeight: 600 }}>
+                          From ${service.pricing.startingPrice} {service.pricing.currency}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </FadeIn>
               );

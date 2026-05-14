@@ -11,6 +11,8 @@ import companyRoutes from './routes/company.js';
 import servicesRoutes from './routes/services.js';
 import productsRoutes from './routes/products.js';
 import contactRoutes from './routes/contact.js';
+import uploadRoutes from './routes/upload.js';
+import path from 'path';
 
 const app = express();
 const PORT = process.env.SERVER_PORT || 5000;
@@ -66,6 +68,10 @@ app.use('/api/company', companyRoutes);
 app.use('/api/services', servicesRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/upload', uploadRoutes);
+
+// Serve uploaded images statically
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 // Health Check Endpoint
 app.get('/api/health', (req, res) => {

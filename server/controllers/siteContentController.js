@@ -1,0 +1,169 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const DATA_FILE = path.join(__dirname, '..', 'data', 'siteContent.json');
+
+// Ensure data directory exists
+const dataDir = path.dirname(DATA_FILE);
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+}
+
+/* ── Default site content (initial state) ── */
+const defaultContent = {
+  hero: {
+    badge: 'Next-Gen Telecom Infrastructure',
+    title: 'Advanced Telecom &\nInfrastructure Solutions\nfor the Digital Future',
+    titleAccent: 'Infrastructure Solutions',
+    subtitle: 'Delivering fiber internet, enterprise networking, cybersecurity, cloud solutions, and smart infrastructure with unmatched reliability and innovation.',
+    ctaPrimary: { text: 'Explore Services', link: '/services' },
+    ctaSecondary: { text: 'Contact Us', link: '/contact' },
+    metrics: [
+      { value: '99.99%', label: 'Uptime SLA', color: '#22C55E', icon: 'TrendingUp', showLive: true },
+      { value: '10 Gbps', label: 'Backbone Capacity', color: '#00BFFF', icon: 'Activity', showLive: false },
+      { value: '50+', label: 'Enterprise Clients', color: '#7C3AED', icon: 'Users', showLive: false }
+    ]
+  },
+  services: [
+    { title: 'Fiber Internet (FTTH)', desc: 'Ultra-fast fiber-optic connectivity with symmetric gigabit speeds and guaranteed bandwidth for homes and businesses.', color: '#0057D9', icon: 'Wifi' },
+    { title: 'Wireless Connectivity', desc: 'Point-to-point and WISP solutions providing coverage in underserved and remote areas with carrier-grade reliability.', color: '#0D9488', icon: 'Radio' },
+    { title: 'Enterprise Networking', desc: 'Custom-designed network architectures including SD-WAN, MPLS, and multi-site connectivity for large organizations.', color: '#7C3AED', icon: 'Building2' },
+    { title: 'Managed IT Services', desc: 'Proactive monitoring, help desk support, patch management, and complete IT operations outsourcing.', color: '#9333EA', icon: 'Headphones' },
+    { title: 'CCTV & Surveillance', desc: 'Professional IP surveillance networks with AI-powered analytics, cloud-based monitoring, and thermal imaging.', color: '#059669', icon: 'Camera' },
+    { title: 'Smart Automation', desc: 'IoT integration, smart building systems, intelligent automation, and connected device ecosystems.', color: '#D97706', icon: 'Cpu' }
+  ],
+  stats: [
+    { value: 99.99, suffix: '%', label: 'Network Uptime', icon: 'TrendingUp', desc: 'Redundant infrastructure' },
+    { value: 50, suffix: '+', label: 'Enterprise Clients', icon: 'Users', desc: 'Across all sectors' },
+    { value: 24, suffix: '/7', label: 'Expert Support', icon: 'Clock', desc: 'Always available' },
+    { value: 3, suffix: '+', label: 'Years Experience', icon: 'Zap', desc: 'Proven track record' }
+  ],
+  solutions: [
+    { title: 'Business Connectivity', desc: 'Enterprise-grade connectivity solutions with dedicated fiber links, SD-WAN orchestration, and multi-site networking for mission-critical operations.', features: ['Dedicated Fiber', 'SD-WAN', 'Multi-Site VPN', 'QoS Management'], icon: 'Building2', image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=800&auto=format&fit=crop' },
+    { title: 'Smart Home Integration', desc: 'Seamless home automation platforms connecting lighting, security, climate, entertainment, and energy management into a unified ecosystem.', features: ['Home Automation', 'Smart Security', 'Voice Control', 'Energy Management'], icon: 'Home', image: 'https://images.unsplash.com/photo-1558002038-1055907df827?q=80&w=800&auto=format&fit=crop' },
+    { title: 'Smart City Infrastructure', desc: 'End-to-end smart city deployments integrating IoT sensors, intelligent traffic management, environmental monitoring, and connected public services.', features: ['IoT Sensor Networks', 'Traffic Management', 'Environmental Monitoring', 'Public Wi-Fi'], icon: 'Globe', image: 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?q=80&w=800&auto=format&fit=crop' }
+  ],
+  testimonials: [
+    { name: 'Marcel Kabongo', role: 'CTO, East Africa Digital', quote: 'Fizi Telecom transformed our entire network infrastructure. The uptime and speed improvements have been remarkable for our business operations.', rating: 5 },
+    { name: 'Sarah Mutoni', role: 'Director, Lakeside Hospitality Group', quote: 'Their CCTV and surveillance solutions gave us complete peace of mind. The advanced monitoring and rapid response times are exactly what we needed.', rating: 5 },
+    { name: 'Jean-Pierre Amani', role: 'CEO, Amani Industries', quote: 'From fiber installation to managed services, Fizi Telecom has been our single trusted partner for all technology needs. Exceptional quality.', rating: 5 }
+  ],
+  partners: [
+    { name: 'Leon Mutambala', phone: '+46 700749806', role: 'Partner' },
+    { name: 'M. Ramazani', phone: '+236 72475485', role: 'Partner' },
+    { name: 'Thierry', phone: '+243 976359001', role: 'Partner' }
+  ],
+  brands: [
+    { name: 'HP', color: '#0096D6' },
+    { name: 'Lenovo', color: '#E2231A' },
+    { name: 'HIKVISION', color: '#D71920' },
+    { name: 'Microsoft', color: '#00A4EF' },
+    { name: 'EPSON', color: '#003399' },
+    { name: 'tp-link', color: '#49C5B6' },
+    { name: 'SEAGATE', color: '#65B32E' },
+    { name: 'D-Link', color: '#008285' },
+    { name: 'APC', color: '#CC0000' },
+    { name: 'CISCO', color: '#049FD9' },
+    { name: 'PREMAX', color: '#E3000F' }
+  ],
+  contact: {
+    phone: '0976359001',
+    email: 'tersatelinfo@gmail.com',
+    address: 'Baraka Fizi, Av ibase No 38',
+    whatsapp: '+243976359001',
+    hours: [
+      { day: 'Monday - Friday', time: '8:00 AM - 6:00 PM' },
+      { day: 'Saturday', time: '9:00 AM - 2:00 PM' },
+      { day: 'Sunday', time: 'Closed' }
+    ]
+  },
+  footer: {
+    tagline: 'Connecting communities and empowering businesses with advanced telecom and technology solutions.',
+    quickLinks: ['Home', 'Services', 'Products', 'Contact'],
+    serviceLinks: ['Fiber Internet (FTTH)', 'Enterprise Networking', 'CCTV & Surveillance', 'Managed IT Services']
+  }
+};
+
+/* ── Helper to read/write JSON file ── */
+function readContent() {
+  try {
+    if (fs.existsSync(DATA_FILE)) {
+      const raw = fs.readFileSync(DATA_FILE, 'utf8');
+      return JSON.parse(raw);
+    }
+  } catch (e) {
+    console.error('Error reading site content:', e.message);
+  }
+  // First run: write defaults and return them
+  writeContent(defaultContent);
+  return { ...defaultContent };
+}
+
+function writeContent(data) {
+  try {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf8');
+    return true;
+  } catch (e) {
+    console.error('Error writing site content:', e.message);
+    return false;
+  }
+}
+
+/* ── Public GET (no auth required) ── */
+export const getSiteContent = (req, res) => {
+  const content = readContent();
+  res.json(content);
+};
+
+export const getSiteSection = (req, res) => {
+  const content = readContent();
+  const { section } = req.params;
+  if (content[section] !== undefined) {
+    return res.json(content[section]);
+  }
+  res.status(404).json({ error: `Section "${section}" not found` });
+};
+
+/* ── Protected PUT (auth required) ── */
+export const updateSiteContent = (req, res) => {
+  const content = readContent();
+  const updates = req.body;
+
+  // Merge updates into existing content
+  for (const key of Object.keys(updates)) {
+    content[key] = updates[key];
+  }
+  content._lastUpdated = new Date().toISOString();
+  content._updatedBy = req.user?.username || 'admin';
+
+  if (writeContent(content)) {
+    res.json({ message: 'Site content updated successfully', content });
+  } else {
+    res.status(500).json({ error: 'Failed to save content' });
+  }
+};
+
+export const updateSiteSection = (req, res) => {
+  const content = readContent();
+  const { section } = req.params;
+  content[section] = req.body;
+  content._lastUpdated = new Date().toISOString();
+  content._updatedBy = req.user?.username || 'admin';
+
+  if (writeContent(content)) {
+    res.json({ message: `Section "${section}" updated`, data: content[section] });
+  } else {
+    res.status(500).json({ error: 'Failed to save content' });
+  }
+};
+
+export const resetSiteContent = (req, res) => {
+  if (writeContent(defaultContent)) {
+    res.json({ message: 'Site content reset to defaults', content: defaultContent });
+  } else {
+    res.status(500).json({ error: 'Failed to reset content' });
+  }
+};

@@ -2,8 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
 import {
-  Globe, Radio, ToggleRight as SwitchIcon, Server,
-  Camera, Laptop, Filter, ArrowRight, Package
+  Laptop, Monitor, Printer, Keyboard, Filter, ArrowRight, Package
 } from 'lucide-react';
 import '../styles/Services.css';
 import '../styles/Products.css';
@@ -21,35 +20,45 @@ function FadeIn({ children, delay = 0 }) {
 }
 
 const iconMap = {
-  'Networking Equipment': Globe,
-  'Infrastructure': SwitchIcon,
-  'Security': Camera,
-  'Computing Hardware': Laptop,
-  'Smart Devices': Server,
+  'Laptops': Laptop,
+  'Desktops': Monitor,
+  'Printers': Printer,
+  'Desktop Accessories': Keyboard,
 };
 
 const featured = [
-  { icon: Globe, title: 'Enterprise Routers', desc: 'High-performance enterprise-grade routers with advanced security and networking capabilities.', color: '#0057D9' },
-  { icon: Radio, title: 'WiFi Systems & Access Points', desc: 'Mesh WiFi systems and professional-grade wireless infrastructure for enterprise environments.', color: '#7C3AED' },
-  { icon: SwitchIcon, title: 'Network Switches', desc: 'Managed switches, fiber optical equipment, and telecommunications infrastructure components.', color: '#0891B2' },
-  { icon: Server, title: 'Servers & Storage', desc: 'Physical servers, storage arrays, NAS systems, and enterprise storage solutions.', color: '#059669' },
-  { icon: Camera, title: 'Surveillance Systems', desc: 'IP cameras, thermal cameras, NVRs, and integrated security management systems.', color: '#DC2626' },
-  { icon: Laptop, title: 'Computing Hardware', desc: 'Desktop computers, laptops, workstations, and enterprise computing solutions.', color: '#D97706' },
+  { icon: Laptop, title: 'Premium Laptops', desc: 'High-performance laptops from top brands like Apple, Dell, and Lenovo.', color: '#0057D9' },
+  { icon: Monitor, title: 'Workstation Desktops', desc: 'Powerful desktop computers and all-in-ones for intensive workloads.', color: '#7C3AED' },
+  { icon: Printer, title: 'Enterprise Printers', desc: 'Reliable laser and inkjet printers for high-volume office environments.', color: '#0891B2' },
+  { icon: Keyboard, title: 'Ergonomic Accessories', desc: 'Premium keyboards, mice, and monitors to maximize productivity.', color: '#059669' },
 ];
 
 import { defaultProducts } from '../fallbackData';
+
+const categoryImages = {
+  'Laptops': 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800&auto=format&fit=crop',
+  'Desktops': 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?q=80&w=800&auto=format&fit=crop',
+  'Printers': 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?q=80&w=800&auto=format&fit=crop',
+  'Desktop Accessories': 'https://images.unsplash.com/photo-1595225476474-87563907a212?q=80&w=800&auto=format&fit=crop',
+};
+const defaultProductImage = 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('');
 
+  const [brandFilter, setBrandFilter] = useState('');
+
   const isDataCenterProduct = (product) => {
     const text = [product.name, product.category, product.description].filter(Boolean).join(' ').toLowerCase();
     return text.includes('data center') || text.includes('data centers');
   };
 
-  useEffect(() => { fetchProducts(); }, [filter]);
+  useEffect(() => { 
+    setBrandFilter(''); // Reset brand filter when category changes
+    fetchProducts(); 
+  }, [filter]);
 
   const fetchProducts = async () => {
     try {
@@ -59,7 +68,14 @@ export default function Products() {
         : 'http://localhost:5000/api/products';
       const response = await fetch(url);
       const data = await response.json();
-      setProducts(Array.isArray(data) ? data.filter(p => !isDataCenterProduct(p)) : (filter ? defaultProducts.filter(p => p.category === filter && !isDataCenterProduct(p)) : defaultProducts.filter(p => !isDataCenterProduct(p))));
+      
+      // If DB has old data, fallback to new defaultProducts
+      let finalData = Array.isArray(data) ? data : [];
+      if (finalData.length > 0 && !['Laptops', 'Desktops', 'Printers', 'Desktop Accessories'].includes(finalData[0].category)) {
+        finalData = filter ? defaultProducts.filter(p => p.category === filter) : defaultProducts;
+      }
+
+      setProducts(finalData.filter(p => !isDataCenterProduct(p)));
     } catch (error) {
       console.error('Error fetching products, using fallback data:', error);
       setProducts(filter ? defaultProducts.filter(p => p.category === filter && !isDataCenterProduct(p)) : defaultProducts.filter(p => !isDataCenterProduct(p)));
@@ -68,7 +84,16 @@ export default function Products() {
     }
   };
 
-  const categories = ['All', 'Networking Equipment', 'Infrastructure', 'Security', 'Computing Hardware', 'Smart Devices'];
+  const categories = ['All', 'Laptops', 'Desktops', 'Printers', 'Desktop Accessories'];
+  
+  // Extract unique brands for the current category
+  const availableBrands = filter && filter !== 'All' 
+    ? [...new Set(defaultProducts.filter(p => p.category === filter).map(p => p.brand))].filter(Boolean)
+    : [];
+
+  const displayedProducts = brandFilter 
+    ? products.filter(p => p.brand === brandFilter)
+    : products;
 
   return (
     <div className="page-products">
@@ -89,37 +114,68 @@ export default function Products() {
 
       <div className="container section-padding">
         <FadeIn>
-          <div className="filter-bar">
-            <div className="filter-bar__label"><Filter size={16} /> Filter by Category</div>
-            <div className="filter-bar__chips">
-              {categories.map(cat => (
-                <button key={cat}
-                  className={`filter-chip ${filter === (cat === 'All' ? '' : cat) ? 'filter-chip--active' : ''}`}
-                  onClick={() => setFilter(cat === 'All' ? '' : cat)}
-                >{cat}</button>
-              ))}
+          <div className="filter-bar" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '16px' }}>
+            <div style={{ display: 'flex', width: '100%', alignItems: 'center', gap: '24px', flexWrap: 'wrap' }}>
+              <div className="filter-bar__label"><Filter size={16} /> Filter by Category</div>
+              <div className="filter-bar__chips">
+                {categories.map(cat => (
+                  <button key={cat}
+                    className={`filter-chip ${filter === (cat === 'All' ? '' : cat) ? 'filter-chip--active' : ''}`}
+                    onClick={() => setFilter(cat === 'All' ? '' : cat)}
+                  >{cat}</button>
+                ))}
+              </div>
             </div>
+            
+            {availableBrands.length > 0 && (
+              <div style={{ display: 'flex', width: '100%', alignItems: 'center', gap: '24px', flexWrap: 'wrap', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+                <div className="filter-bar__label" style={{ minWidth: '140px', color: '#00BFFF' }}>Filter by Brand</div>
+                <div className="filter-bar__chips">
+                  <button 
+                    className={`filter-chip ${brandFilter === '' ? 'filter-chip--active' : ''}`}
+                    onClick={() => setBrandFilter('')}
+                  >All Brands</button>
+                  {availableBrands.map(brand => (
+                    <button key={brand}
+                      className={`filter-chip ${brandFilter === brand ? 'filter-chip--active' : ''}`}
+                      onClick={() => setBrandFilter(brand)}
+                    >{brand}</button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </FadeIn>
 
         {loading ? (
           <div className="loading-state"><div className="loading-spinner" /> Loading products...</div>
-        ) : products.length > 0 ? (
+        ) : displayedProducts.length > 0 ? (
           <div className="products-grid">
-            {products.map((product, i) => {
+            {displayedProducts.map((product, i) => {
               const IconComp = iconMap[product.category] || Package;
+              const imgUrl = product.image || categoryImages[product.category] || defaultProductImage;
               return (
                 <FadeIn key={product._id || product.id || i} delay={i * 0.04}>
-                  <div className="product-card">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                      <div className="product-card__icon"><IconComp size={22} /></div>
-                      <span style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-gray)', background: 'rgba(255,255,255,0.05)', padding: '4px 8px', borderRadius: '4px' }}>{product.category}</span>
+                  <div className="product-card" style={{ padding: 0, overflow: 'hidden' }}>
+                    <div style={{ width: '100%', height: '180px', backgroundImage: `url(${imgUrl})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
+                      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,25,47,0.9), transparent)' }} />
+                      <div style={{ position: 'absolute', bottom: '16px', left: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div className="product-card__icon" style={{ background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(4px)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}><IconComp size={20} /></div>
+                        <span style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#fff', background: 'rgba(0,191,255,0.2)', backdropFilter: 'blur(4px)', padding: '4px 8px', borderRadius: '4px', border: '1px solid rgba(0,191,255,0.3)' }}>{product.category}</span>
+                      </div>
                     </div>
-                    <h3 className="product-card__title">{product.name}</h3>
-                    <p className="product-card__desc">{product.description}</p>
-                    <div className="product-card__footer">
-                      {product.price && <span className="product-card__price">${product.price} {product.currency}</span>}
-                      {product.availability && <span className="product-card__status">{product.availability}</span>}
+                    <div style={{ padding: '24px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                        <h3 className="product-card__title">{product.name}</h3>
+                        {product.brand && (
+                          <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--accent-cyan)', background: 'rgba(0, 191, 255, 0.1)', padding: '2px 8px', borderRadius: '12px' }}>{product.brand}</span>
+                        )}
+                      </div>
+                      <p className="product-card__desc">{product.description}</p>
+                      <div className="product-card__footer">
+                        {product.price && <span className="product-card__price">${product.price} {product.currency}</span>}
+                        {product.availability && <span className="product-card__status">{product.availability}</span>}
+                      </div>
                     </div>
                   </div>
                 </FadeIn>
@@ -127,7 +183,7 @@ export default function Products() {
             })}
           </div>
         ) : (
-          <div className="empty-state">No products found. Check back soon!</div>
+          <div className="empty-state">No products found for this selection. Try changing the filters.</div>
         )}
 
         <FadeIn>

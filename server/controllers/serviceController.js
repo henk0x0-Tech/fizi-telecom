@@ -13,7 +13,9 @@ const defaultServices = [
   { id: 's9', name: 'Device Maintenance', category: 'Support & Maintenance', description: 'Routine cleaning, hardware checks, and optimization for computers and networking gear.', pricing: { startingPrice: 50, currency: 'USD' } },
   { id: 's10', name: 'Access Point Setup', category: 'WiFi & Smart Solutions', description: 'Strategic placement and configuration of wireless access points to eliminate dead zones.', pricing: { startingPrice: 75, currency: 'USD' } },
   { id: 's11', name: 'Data Backup', category: 'IT Infrastructure', description: 'Setup of automated local and cloud backup solutions to protect critical information.', pricing: { startingPrice: 90, currency: 'USD' } },
-  { id: 's12', name: 'Technical Support', category: 'Support & Maintenance', description: 'On-demand IT assistance for software glitches, hardware issues, and user queries.', pricing: { startingPrice: 40, currency: 'USD' } }
+  { id: 's12', name: 'Technical Support', category: 'Support & Maintenance', description: 'On-demand IT assistance for software glitches, hardware issues, and user queries.', pricing: { startingPrice: 40, currency: 'USD' } },
+  { id: 's13', name: 'Website Development', category: 'IT Infrastructure', image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop', description: 'Stunning, conversion-focused websites that establish your digital presence and drive results.', pricing: { startingPrice: 499, currency: 'USD' } },
+  { id: 's14', name: 'Social Media Management', category: 'IT Infrastructure', image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800&auto=format&fit=crop', description: 'Strategic content creation and community management across all major platforms.', pricing: { startingPrice: 199, currency: 'USD' } }
 ];
 
 export const getAllServices = async (req, res) => {

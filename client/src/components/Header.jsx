@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo.jpeg';
 import '../styles/Header.css';
 
 export default function Header() {

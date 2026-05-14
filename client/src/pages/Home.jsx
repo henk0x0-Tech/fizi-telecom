@@ -111,8 +111,9 @@ function NetworkCanvas() {
   return <canvas ref={canvasRef} className="hero__canvas" />;
 }
 
-/* ── Data ── */
 const services = [
+  { icon: Globe, title: 'Website Development', desc: 'Stunning, conversion-focused websites that establish your digital presence and drive results.', color: '#F97316', gradient: 'linear-gradient(135deg, #F97316, #fdba74)' },
+  { icon: TrendingUp, title: 'Social Media Management', desc: 'Strategic content creation and community management across all major platforms.', color: '#F97316', gradient: 'linear-gradient(135deg, #F97316, #fdba74)' },
   { icon: Wifi, title: 'Fiber Internet (FTTH)', desc: 'Ultra-fast fiber-optic connectivity with symmetric gigabit speeds and guaranteed bandwidth for homes and businesses.', color: '#0057D9', gradient: 'linear-gradient(135deg, #0057D9, #3b82f6)' },
   { icon: Radio, title: 'Wireless Connectivity', desc: 'Point-to-point and WISP solutions providing coverage in underserved and remote areas with carrier-grade reliability.', color: '#0D9488', gradient: 'linear-gradient(135deg, #0D9488, #5eead4)' },
   { icon: Building2, title: 'Enterprise Networking', desc: 'Custom-designed network architectures including SD-WAN, MPLS, and multi-site connectivity for large organizations.', color: '#7C3AED', gradient: 'linear-gradient(135deg, #7C3AED, #a78bfa)' },
