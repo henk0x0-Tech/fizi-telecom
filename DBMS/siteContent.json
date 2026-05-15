@@ -1,0 +1,603 @@
+{
+  "hero": {
+    "badge": "Next-Gen Telecom Infrastructure",
+    "title": "Advanced Telecom &\nInfrastructure Solutions\nfor the Digital Future",
+    "titleAccent": "Infrastructure Solutions",
+    "subtitle": "Delivering fiber internet, enterprise networking, cybersecurity, cloud solutions, and smart infrastructure with unmatched reliability and innovation.",
+    "ctaPrimary": {
+      "text": "Explore Services",
+      "link": "/services"
+    },
+    "ctaSecondary": {
+      "text": "Contact Us",
+      "link": "/contact"
+    },
+    "metrics": [
+      {
+        "value": "99.99%",
+        "label": "Uptime SLA",
+        "color": "#22C55E",
+        "icon": "TrendingUp",
+        "showLive": true
+      },
+      {
+        "value": "10 Gbps",
+        "label": "Backbone Capacity",
+        "color": "#00BFFF",
+        "icon": "Activity",
+        "showLive": false
+      },
+      {
+        "value": "50+",
+        "label": "Enterprise Clients",
+        "color": "#7C3AED",
+        "icon": "Users",
+        "showLive": false
+      }
+    ]
+  },
+  "services": [
+    {
+      "id": "s1",
+      "name": "Internet Setup",
+      "category": "Connectivity",
+      "image": "/images/internet_setup.png",
+      "description": "Professional installation and configuration of high-speed internet connections for homes and offices.",
+      "pricing": {
+        "startingPrice": 49,
+        "currency": "USD"
+      }
+    },
+    {
+      "id": "s2",
+      "name": "Wi-Fi Setup",
+      "category": "WiFi & Smart Solutions",
+      "image": "/images/wifi_setup.png",
+      "description": "Complete wireless network setup ensuring optimal coverage and secure connectivity.",
+      "pricing": {
+        "startingPrice": 39,
+        "currency": "USD"
+      }
+    },
+    {
+      "id": "s3",
+      "name": "Router Installation",
+      "category": "Enterprise Networking",
+      "image": "/images/router_installlation.png",
+      "description": "Installation and secure configuration of home and enterprise-grade routers.",
+      "pricing": {
+        "startingPrice": 59,
+        "currency": "USD"
+      }
+    },
+    {
+      "id": "s4",
+      "name": "Network Troubleshooting",
+      "category": "Support & Maintenance",
+      "image": "/images/network_troubleshoot.png",
+      "description": "Diagnostics and repair of network issues, connectivity drops, and speed problems.",
+      "pricing": {
+        "startingPrice": 65,
+        "currency": "USD"
+      }
+    },
+    {
+      "id": "s5",
+      "name": "CCTV Installation",
+      "category": "Security",
+      "image": "/images/cctv_installation.png",
+      "description": "Mounting, wiring, and software setup for indoor and outdoor security cameras.",
+      "pricing": {
+        "startingPrice": 120,
+        "currency": "USD"
+      }
+    },
+    {
+      "id": "s6",
+      "name": "Desktop Setup",
+      "category": "IT Infrastructure",
+      "image": "/images/Desktop_setup.png",
+      "description": "Unboxing, assembly, OS configuration, and peripheral connection for new workstations.",
+      "pricing": {
+        "startingPrice": 45,
+        "currency": "USD"
+      }
+    },
+    {
+      "id": "s7",
+      "name": "Software Installation",
+      "category": "IT Infrastructure",
+      "image": "/images/software installation.png",
+      "description": "Installation of operating systems, office suites, antivirus, and specialized business applications.",
+      "pricing": {
+        "startingPrice": 30,
+        "currency": "USD"
+      }
+    },
+    {
+      "id": "s8",
+      "name": "Laptop Repair",
+      "category": "Support & Maintenance",
+      "image": "/images/laptop_repair.png",
+      "description": "Hardware diagnostics, screen replacements, keyboard repairs, and battery changes.",
+      "pricing": {
+        "startingPrice": 80,
+        "currency": "USD"
+      }
+    },
+    {
+      "id": "s9",
+      "name": "Device Maintenance",
+      "category": "Support & Maintenance",
+      "image": "/images/Device_maintance.png",
+      "description": "Routine cleaning, hardware checks, and optimization for computers and networking gear.",
+      "pricing": {
+        "startingPrice": 50,
+        "currency": "USD"
+      }
+    },
+    {
+      "id": "s10",
+      "name": "Access Point Setup",
+      "category": "WiFi & Smart Solutions",
+      "image": "/images/access_point.png",
+      "description": "Strategic placement and configuration of wireless access points to eliminate dead zones.",
+      "pricing": {
+        "startingPrice": 75,
+        "currency": "USD"
+      }
+    },
+    {
+      "id": "s11",
+      "name": "Data Backup",
+      "category": "IT Infrastructure",
+      "image": "/images/data_backup.png",
+      "description": "Setup of automated local and cloud backup solutions to protect critical information.",
+      "pricing": {
+        "startingPrice": 90,
+        "currency": "USD"
+      }
+    },
+    {
+      "id": "s12",
+      "name": "Technical Support",
+      "category": "Support & Maintenance",
+      "image": "/images/technical_support.png",
+      "description": "On-demand IT assistance for software glitches, hardware issues, and user queries.",
+      "pricing": {
+        "startingPrice": 40,
+        "currency": "USD"
+      }
+    },
+    {
+      "id": "s13",
+      "name": "Website Development",
+      "category": "IT Infrastructure",
+      "image": "/images/web_development.png",
+      "description": "Stunning, conversion-focused websites that establish your digital presence and drive results.",
+      "pricing": {
+        "startingPrice": 499,
+        "currency": "USD"
+      }
+    },
+    {
+      "id": "s14",
+      "name": "Social Media Management",
+      "category": "IT Infrastructure",
+      "image": "/images/social_media.png",
+      "description": "Strategic content creation and community management across all major platforms.",
+      "pricing": {
+        "startingPrice": 199,
+        "currency": "USD"
+      }
+    }
+  ],
+  "stats": [
+    {
+      "value": 99.99,
+      "suffix": "%",
+      "label": "Network Uptime",
+      "icon": "TrendingUp",
+      "desc": "Redundant infrastructure"
+    },
+    {
+      "value": 50,
+      "suffix": "+",
+      "label": "Enterprise Clients",
+      "icon": "Users",
+      "desc": "Across all sectors"
+    },
+    {
+      "value": 24,
+      "suffix": "/7",
+      "label": "Expert Support",
+      "icon": "Clock",
+      "desc": "Always available"
+    },
+    {
+      "value": 3,
+      "suffix": "+",
+      "label": "Years Experience",
+      "icon": "Zap",
+      "desc": "Proven track record"
+    }
+  ],
+  "solutions": [
+    {
+      "title": "Business Connectivity",
+      "desc": "Enterprise-grade connectivity solutions with dedicated fiber links, SD-WAN orchestration, and multi-site networking for mission-critical operations.",
+      "features": [
+        "Dedicated Fiber",
+        "SD-WAN",
+        "Multi-Site VPN",
+        "QoS Management"
+      ],
+      "icon": "Building2",
+      "image": "/images/business_connectivity.png"
+    },
+    {
+      "title": "Smart Home Integration",
+      "desc": "Seamless home automation platforms connecting lighting, security, climate, entertainment, and energy management into a unified ecosystem.",
+      "features": [
+        "Home Automation",
+        "Smart Security",
+        "Voice Control",
+        "Energy Management"
+      ],
+      "icon": "Home",
+      "image": "/images/smart_home_integration.png"
+    },
+    {
+      "title": "Smart City Infrastructure",
+      "desc": "End-to-end smart city deployments integrating IoT sensors, intelligent traffic management, environmental monitoring, and connected public services.",
+      "features": [
+        "IoT Sensor Networks",
+        "Traffic Management",
+        "Environmental Monitoring",
+        "Public Wi-Fi"
+      ],
+      "icon": "Globe",
+      "image": "/images/smart_city_infrastructure.png"
+    }
+  ],
+  "testimonials": [
+    {
+      "name": "Marcel Kabongo",
+      "role": "CTO, East Africa Digital",
+      "quote": "Fizi Telecom transformed our entire network infrastructure. The uptime and speed improvements have been remarkable for our business operations.",
+      "rating": 5
+    },
+    {
+      "name": "Sarah Mutoni",
+      "role": "Director, Lakeside Hospitality Group",
+      "quote": "Their CCTV and surveillance solutions gave us complete peace of mind. The advanced monitoring and rapid response times are exactly what we needed.",
+      "rating": 5
+    },
+    {
+      "name": "Jean-Pierre Amani",
+      "role": "CEO, Amani Industries",
+      "quote": "From fiber installation to managed services, Fizi Telecom has been our single trusted partner for all technology needs. Exceptional quality.",
+      "rating": 5
+    }
+  ],
+  "partners": [
+    {
+      "name": "Leon Mutambala",
+      "phone": "+46 700749806",
+      "role": "Partner"
+    },
+    {
+      "name": "M. Ramazani",
+      "phone": "+236 72475485",
+      "role": "Partner"
+    },
+    {
+      "name": "Thierry",
+      "phone": "+243 976359001",
+      "role": "Partner"
+    }
+  ],
+  "brands": [
+    {
+      "name": "HP",
+      "color": "#0096D6"
+    },
+    {
+      "name": "Lenovo",
+      "color": "#E2231A"
+    },
+    {
+      "name": "HIKVISION",
+      "color": "#D71920"
+    },
+    {
+      "name": "Microsoft",
+      "color": "#00A4EF"
+    },
+    {
+      "name": "EPSON",
+      "color": "#003399"
+    },
+    {
+      "name": "tp-link",
+      "color": "#49C5B6"
+    },
+    {
+      "name": "SEAGATE",
+      "color": "#65B32E"
+    },
+    {
+      "name": "D-Link",
+      "color": "#008285"
+    },
+    {
+      "name": "APC",
+      "color": "#CC0000"
+    },
+    {
+      "name": "CISCO",
+      "color": "#049FD9"
+    },
+    {
+      "name": "PREMAX",
+      "color": "#E3000F"
+    }
+  ],
+  "contact": {
+    "phone": "0976359001",
+    "email": "tersatelinfo@gmail.com",
+    "address": "Baraka Fizi, Av ibase No 38",
+    "whatsapp": "+243976359001",
+    "hours": [
+      {
+        "day": "Monday - Friday",
+        "time": "8:00 AM - 6:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "time": "9:00 AM - 2:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "time": "Closed"
+      }
+    ]
+  },
+  "footer": {
+    "tagline": "Connecting communities and empowering businesses with advanced telecom and technology solutions.",
+    "quickLinks": [
+      "Home",
+      "Services",
+      "Products",
+      "Contact"
+    ],
+    "serviceLinks": [
+      "Fiber Internet (FTTH)",
+      "Enterprise Networking",
+      "CCTV & Surveillance",
+      "Managed IT Services"
+    ]
+  },
+  "products": [
+    {
+      "id": "l1",
+      "name": "HP Spectre x360",
+      "brand": "HP",
+      "category": "Laptops",
+      "image": "/images/8.jpeg",
+      "description": "Versatile 2-in-1 premium laptop with long battery life.",
+      "price": 1399,
+      "currency": "USD",
+      "availability": "In Stock"
+    },
+    {
+      "id": "l2",
+      "name": "Dell XPS 15",
+      "brand": "Dell",
+      "category": "Laptops",
+      "image": "/images/9.jpeg",
+      "description": "Powerful creator laptop with stunning 4K OLED display.",
+      "price": 1899,
+      "currency": "USD",
+      "availability": "In Stock"
+    },
+    {
+      "id": "l3",
+      "name": "Lenovo ThinkPad X1 Carbon",
+      "brand": "Lenovo",
+      "category": "Laptops",
+      "image": "/images/10.jpeg",
+      "description": "Ultralight business laptop with legendary keyboard.",
+      "price": 1599,
+      "currency": "USD",
+      "availability": "In Stock"
+    },
+    {
+      "id": "l4",
+      "name": "MacBook Pro 16\" M3",
+      "brand": "Apple",
+      "category": "Laptops",
+      "image": "/images/11.jpeg",
+      "description": "Ultimate performance for professionals and creatives.",
+      "price": 2499,
+      "currency": "USD",
+      "availability": "Low Stock"
+    },
+    {
+      "id": "l5",
+      "name": "Asus ROG Zephyrus G14",
+      "brand": "Asus",
+      "category": "Laptops",
+      "image": "/images/7.jpeg",
+      "description": "Compact gaming and high-performance computing laptop.",
+      "price": 1499,
+      "currency": "USD",
+      "availability": "In Stock"
+    },
+    {
+      "id": "d1",
+      "name": "HP EliteDesk 800",
+      "brand": "HP",
+      "category": "Desktops",
+      "image": "/images/2.jpeg",
+      "description": "Secure and manageable enterprise tower PC.",
+      "price": 850,
+      "currency": "USD",
+      "availability": "In Stock"
+    },
+    {
+      "id": "d2",
+      "name": "Dell OptiPlex 7000 Micro",
+      "brand": "Dell",
+      "category": "Desktops",
+      "image": "/images/3.jpeg",
+      "description": "Ultra-compact desktop engineered for secure performance.",
+      "price": 799,
+      "currency": "USD",
+      "availability": "In Stock"
+    },
+    {
+      "id": "d3",
+      "name": "Apple iMac 24\"",
+      "brand": "Apple",
+      "category": "Desktops",
+      "image": "/images/4.jpeg",
+      "description": "All-in-one desktop with striking design and M3 chip.",
+      "price": 1299,
+      "currency": "USD",
+      "availability": "In Stock"
+    },
+    {
+      "id": "d4",
+      "name": "Lenovo ThinkCentre M90a",
+      "brand": "Lenovo",
+      "category": "Desktops",
+      "image": "/images/5.jpeg",
+      "description": "Premium all-in-one desktop for the modern workspace.",
+      "price": 1100,
+      "currency": "USD",
+      "availability": "In Stock"
+    },
+    {
+      "id": "d5",
+      "name": "CyberPowerPC Gamer Xtreme",
+      "brand": "CyberPowerPC",
+      "category": "Desktops",
+      "image": "/images/6.jpeg",
+      "description": "High-end workstation and gaming desktop.",
+      "price": 1250,
+      "currency": "USD",
+      "availability": "In Stock"
+    },
+    {
+      "id": "p1",
+      "name": "HP LaserJet Pro MFP",
+      "brand": "HP",
+      "category": "Printers",
+      "image": "/images/HP LaserJet Pro MFP.png",
+      "description": "Wireless monochrome laser printer for busy offices.",
+      "price": 450,
+      "currency": "USD",
+      "availability": "In Stock"
+    },
+    {
+      "id": "p2",
+      "name": "Canon imageCLASS",
+      "brand": "Canon",
+      "category": "Printers",
+      "image": "/images/Canon imageCLASS.png",
+      "description": "Color laser printer with mobile connectivity.",
+      "price": 520,
+      "currency": "USD",
+      "availability": "In Stock"
+    },
+    {
+      "id": "p3",
+      "name": "Epson EcoTank Pro",
+      "brand": "Epson",
+      "category": "Printers",
+      "image": "/images/Epson EcoTank Pro.png",
+      "description": "Cartridge-free supertank printer for high-volume printing.",
+      "price": 850,
+      "currency": "USD",
+      "availability": "Low Stock"
+    },
+    {
+      "id": "p4",
+      "name": "Brother HL-L8360CDW",
+      "brand": "Brother",
+      "category": "Printers",
+      "image": "/images/Brother HL-L8360CDW.png",
+      "description": "Business color laser printer with advanced security.",
+      "price": 350,
+      "currency": "USD",
+      "availability": "In Stock"
+    },
+    {
+      "id": "p5",
+      "name": "Xerox VersaLink C400",
+      "brand": "Xerox",
+      "category": "Printers",
+      "image": "/images/Xerox VersaLink C400.png",
+      "description": "Reliable and fast color printer for enterprise use.",
+      "price": 400,
+      "currency": "USD",
+      "availability": "In Stock"
+    },
+    {
+      "id": "a1",
+      "name": "Logitech MX Master 3S",
+      "brand": "Logitech",
+      "category": "Desktop Accessories",
+      "image": "/images/Logitech MX Master 3S.png",
+      "description": "Advanced wireless mouse with ultra-fast scrolling.",
+      "price": 99,
+      "currency": "USD",
+      "availability": "In Stock"
+    },
+    {
+      "id": "a2",
+      "name": "Dell UltraSharp 27\" Monitor",
+      "brand": "Dell",
+      "category": "Desktop Accessories",
+      "image": "/images/Dell UltraSharp 27 Monitor.png",
+      "description": "Color-accurate 4K USB-C monitor.",
+      "price": 550,
+      "currency": "USD",
+      "availability": "In Stock"
+    },
+    {
+      "id": "a3",
+      "name": "Keychron Q1 Pro Keyboard",
+      "brand": "Keychron",
+      "category": "Desktop Accessories",
+      "image": "/images/Keychron Q1 Pro Keyboard.png",
+      "description": "Premium custom wireless mechanical keyboard.",
+      "price": 199,
+      "currency": "USD",
+      "availability": "In Stock"
+    },
+    {
+      "id": "a4",
+      "name": "APC Back-UPS Pro 1500VA",
+      "brand": "APC",
+      "category": "Desktop Accessories",
+      "image": "/images/APC Back-UPS Pro 1500VA.png",
+      "description": "Uninterruptible power supply to protect equipment.",
+      "price": 230,
+      "currency": "USD",
+      "availability": "In Stock"
+    },
+    {
+      "id": "a5",
+      "name": "Sony WH-1000XM5 Headphones",
+      "brand": "Sony",
+      "category": "Desktop Accessories",
+      "image": "/images/Sony WH-1000XM5 Headphones.png",
+      "description": "Noise-canceling wireless headphones for focused work.",
+      "price": 398,
+      "currency": "USD",
+      "availability": "In Stock"
+    }
+  ]
+}

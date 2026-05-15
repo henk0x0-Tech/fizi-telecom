@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+Disallow: /.env
+Disallow: /uploads/
+
+# Sitemap
+Sitemap: https://fizitelecom.com/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1

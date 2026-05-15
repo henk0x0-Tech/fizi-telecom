@@ -1,0 +1,21 @@
+# ═══════════════════════════════════════════════════════
+#  FIZI TELECOM — Netlify _redirects
+#  Placed in client/public/ so it gets copied to dist/
+#
+#  Note: netlify.toml [[redirects]] takes precedence.
+#  This file is a fallback/explicit list.
+# ═══════════════════════════════════════════════════════
+
+# ── Proxy API calls to backend ────────────────────────
+# Replace https://your-backend.onrender.com with your
+# actual deployed backend URL.
+/api/*  https://your-backend.onrender.com/api/:splat  200
+
+# ── Block server-side paths ───────────────────────────
+/.env                  /404    404
+/server/*              /404    404
+/.git/*                /404    404
+/node_modules/*        /404    404
+
+# ── SPA — React Router catch-all (MUST be last) ───────
+/*    /index.html    200
