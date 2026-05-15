@@ -17,18 +17,18 @@ const defaultProducts = [
   { id: 'd5', name: 'CyberPowerPC Gamer Xtreme', brand: 'CyberPowerPC', category: 'Desktops', image: '/images/6.jpeg', description: 'High-end workstation and gaming desktop.', price: 1250, currency: 'USD', availability: 'In Stock' },
 
   // Printers
-  { id: 'p1', name: 'HP LaserJet Pro MFP', brand: 'HP', category: 'Printers', image: '/images/HP LaserJet Pro MFP.png', description: 'Wireless monochrome laser printer for busy offices.', price: 450, currency: 'USD', availability: 'In Stock' },
-  { id: 'p2', name: 'Canon imageCLASS', brand: 'Canon', category: 'Printers', image: '/images/Canon imageCLASS.png', description: 'Color laser printer with mobile connectivity.', price: 520, currency: 'USD', availability: 'In Stock' },
-  { id: 'p3', name: 'Epson EcoTank Pro', brand: 'Epson', category: 'Printers', image: '/images/Epson EcoTank Pro.png', description: 'Cartridge-free supertank printer for high-volume printing.', price: 850, currency: 'USD', availability: 'Low Stock' },
-  { id: 'p4', name: 'Brother HL-L8360CDW', brand: 'Brother', category: 'Printers', image: '/images/Brother HL-L8360CDW.png', description: 'Business color laser printer with advanced security.', price: 350, currency: 'USD', availability: 'In Stock' },
-  { id: 'p5', name: 'Xerox VersaLink C400', brand: 'Xerox', category: 'Printers', image: '/images/Xerox VersaLink C400.png', description: 'Reliable and fast color printer for enterprise use.', price: 400, currency: 'USD', availability: 'In Stock' },
+  { id: 'p1', name: 'HP LaserJet Pro MFP', brand: 'HP', category: 'Printers', image: '/images/HP_LaserJet_Pro_MFP.png', description: 'Wireless monochrome laser printer for busy offices.', price: 450, currency: 'USD', availability: 'In Stock' },
+  { id: 'p2', name: 'Canon imageCLASS', brand: 'Canon', category: 'Printers', image: '/images/Canon_imageCLASS.png', description: 'Color laser printer with mobile connectivity.', price: 520, currency: 'USD', availability: 'In Stock' },
+  { id: 'p3', name: 'Epson EcoTank Pro', brand: 'Epson', category: 'Printers', image: '/images/Epson_EcoTank_Pro.png', description: 'Cartridge-free supertank printer for high-volume printing.', price: 850, currency: 'USD', availability: 'Low Stock' },
+  { id: 'p4', name: 'Brother HL-L8360CDW', brand: 'Brother', category: 'Printers', image: '/images/Brother_HL-L8360CDW.png', description: 'Business color laser printer with advanced security.', price: 350, currency: 'USD', availability: 'In Stock' },
+  { id: 'p5', name: 'Xerox VersaLink C400', brand: 'Xerox', category: 'Printers', image: '/images/Xerox_VersaLink_C400.png', description: 'Reliable and fast color printer for enterprise use.', price: 400, currency: 'USD', availability: 'In Stock' },
 
   // Desktop Accessories
-  { id: 'a1', name: 'Logitech MX Master 3S', brand: 'Logitech', category: 'Desktop Accessories', image: '/images/Logitech MX Master 3S.png', description: 'Advanced wireless mouse with ultra-fast scrolling.', price: 99, currency: 'USD', availability: 'In Stock' },
-  { id: 'a2', name: 'Dell UltraSharp 27" Monitor', brand: 'Dell', category: 'Desktop Accessories', image: '/images/Dell UltraSharp 27 Monitor.png', description: 'Color-accurate 4K USB-C monitor.', price: 550, currency: 'USD', availability: 'In Stock' },
-  { id: 'a3', name: 'Keychron Q1 Pro Keyboard', brand: 'Keychron', category: 'Desktop Accessories', image: '/images/Keychron Q1 Pro Keyboard.png', description: 'Premium custom wireless mechanical keyboard.', price: 199, currency: 'USD', availability: 'In Stock' },
-  { id: 'a4', name: 'APC Back-UPS Pro 1500VA', brand: 'APC', category: 'Desktop Accessories', image: '/images/APC Back-UPS Pro 1500VA.png', description: 'Uninterruptible power supply to protect equipment.', price: 230, currency: 'USD', availability: 'In Stock' },
-  { id: 'a5', name: 'Sony WH-1000XM5 Headphones', brand: 'Sony', category: 'Desktop Accessories', image: '/images/Sony WH-1000XM5 Headphones.png', description: 'Noise-canceling wireless headphones for focused work.', price: 398, currency: 'USD', availability: 'In Stock' },
+  { id: 'a1', name: 'Logitech MX Master 3S', brand: 'Logitech', category: 'Desktop Accessories', image: '/images/Logitech_MX_Master_3S.png', description: 'Advanced wireless mouse with ultra-fast scrolling.', price: 99, currency: 'USD', availability: 'In Stock' },
+  { id: 'a2', name: 'Dell UltraSharp 27" Monitor', brand: 'Dell', category: 'Desktop Accessories', image: '/images/Dell_UltraSharp_27_Monitor.png', description: 'Color-accurate 4K USB-C monitor.', price: 550, currency: 'USD', availability: 'In Stock' },
+  { id: 'a3', name: 'Keychron Q1 Pro Keyboard', brand: 'Keychron', category: 'Desktop Accessories', image: '/images/Keychron_Q1_Pro_Keyboard.png', description: 'Premium custom wireless mechanical keyboard.', price: 199, currency: 'USD', availability: 'In Stock' },
+  { id: 'a4', name: 'APC Back-UPS Pro 1500VA', brand: 'APC', category: 'Desktop Accessories', image: '/images/APC_Back-UPS_Pro_1500VA.png', description: 'Uninterruptible power supply to protect equipment.', price: 230, currency: 'USD', availability: 'In Stock' },
+  { id: 'a5', name: 'Sony WH-1000XM5 Headphones', brand: 'Sony', category: 'Desktop Accessories', image: '/images/Sony_WH-1000XM5_Headphones.png', description: 'Noise-canceling wireless headphones for focused work.', price: 398, currency: 'USD', availability: 'In Stock' },
 ];
 
 export const getAllProducts = async (req, res) => {
