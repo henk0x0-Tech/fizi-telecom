@@ -7,7 +7,7 @@
 # ── Build settings ────────────────────────────────────
 [build]
   base    = "frontend"
-  publish = "frontend/dist"
+  publish = "dist"
   command = "npm run build"
 
 [build.environment]
@@ -49,7 +49,7 @@
   force  = true
 
 [[redirects]]
-  from   = "/server/*"
+  from   = "/backend/*"
   to     = "/404"
   status = 404
   force  = true
