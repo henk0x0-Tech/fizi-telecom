@@ -73,17 +73,18 @@ export default function Services() {
 
   useEffect(() => { fetchServices(); }, [filter]);
 
+  const API_BASE = import.meta.env.VITE_API_URL || '/api';
+
   const fetchServices = async () => {
     try {
       setLoading(true);
       const url = filter
-        ? `http://localhost:5000/api/services?category=${filter}`
-        : 'http://localhost:5000/api/services';
+        ? `${API_BASE}/services?category=${encodeURIComponent(filter)}`
+        : `${API_BASE}/services`;
       const response = await fetch(url);
       const data = await response.json();
       setServices(Array.isArray(data) ? data : (filter ? defaultServices.filter(s => s.category === filter) : defaultServices));
     } catch (error) {
-      console.error('Error fetching services, using fallback data:', error);
       setServices(filter ? defaultServices.filter(s => s.category === filter) : defaultServices);
     } finally {
       setLoading(false);
@@ -95,9 +96,10 @@ export default function Services() {
   return (
     <div className="page-services">
       <SEO
-        title="Managed IT Services, Fiber & Network Installation | Fizi Telecom"
-        description="Expert IT infrastructure solutions: high-speed fiber internet, SD-WAN enterprise networking, cloud storage, CCTV installation, and 24/7 proactive IT support."
+        title="Fiber Internet, CCTV & Managed IT Services in Fizi DRC"
+        description="Fizi Telecom offers high-speed fiber internet (FTTH), enterprise SD-WAN networking, CCTV surveillance installation, cloud backup, and 24/7 IT support in Fizi, DRC. Get a free quote today."
         canonical="/services"
+        keywords="fiber internet Fizi, CCTV installation DRC, enterprise networking, Wi-Fi setup, IT support Fizi, managed IT services, FTTH DRC"
       />
       {/* Hero */}
       <section className="page-hero">
@@ -145,7 +147,7 @@ export default function Services() {
                     <div style={{ width: '100%', height: '180px', position: 'relative', overflow: 'hidden' }}>
                       <img
                         src={imgUrl}
-                        alt={service.name}
+                        alt={`${service.name} service in Fizi, DRC — Fizi Telecom`}
                         loading="lazy"
                         decoding="async"
                         width="400"
@@ -183,6 +185,15 @@ export default function Services() {
             <h2 className="section-title">Our Core Services</h2>
           </div>
         </FadeIn>
+        {/* ── Internal link to Products ── */}
+        <FadeIn>
+          <div style={{ textAlign: 'center', marginTop: 64, padding: '40px 32px', background: 'rgba(0,87,217,0.06)', borderRadius: 16, border: '1px solid rgba(0,87,217,0.12)' }}>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: 10 }}>Looking for Hardware?</h2>
+            <p style={{ color: 'var(--text-gray)', marginBottom: 20, fontSize: '0.95rem' }}>Browse our catalog of laptops, desktops, printers, and IT accessories from top brands.</p>
+            <Link to="/products" className="hero__btn hero__btn--primary" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 28px', borderRadius: 30, background: 'linear-gradient(135deg,#0057d9,#0072ff)', color: '#fff', fontWeight: 600, textDecoration: 'none' }}>View Product Catalog →</Link>
+          </div>
+        </FadeIn>
+
         <div className="featured-grid">
           {featuredServices.map((s, i) => (
             <FadeIn key={s.title} delay={i * 0.06}>

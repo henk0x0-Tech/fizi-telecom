@@ -6,7 +6,17 @@ Disallow: /api/
 Disallow: /.env
 Disallow: /uploads/
 
-# Sitemap
+# Block AI training crawlers
+User-agent: GPTBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+# Sitemap location
 Sitemap: https://fizitelecom.com/sitemap.xml
 
 # Crawl delay

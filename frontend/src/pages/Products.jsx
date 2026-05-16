@@ -70,24 +70,22 @@ export default function Products() {
     fetchProducts(); 
   }, [filter]);
 
+  const API_BASE = import.meta.env.VITE_API_URL || '/api';
+
   const fetchProducts = async () => {
     try {
       setLoading(true);
       const url = filter
-        ? `http://localhost:5000/api/products?category=${filter}`
-        : 'http://localhost:5000/api/products';
+        ? `${API_BASE}/products?category=${encodeURIComponent(filter)}`
+        : `${API_BASE}/products`;
       const response = await fetch(url);
       const data = await response.json();
-      
-      // If DB has old data, fallback to new defaultProducts
       let finalData = Array.isArray(data) ? data : [];
-      if (finalData.length > 0 && !['Laptops', 'Desktops', 'Printers', 'Desktop Accessories'].includes(finalData[0].category)) {
+      if (finalData.length > 0 && !['Laptops','Desktops','Printers','Desktop Accessories'].includes(finalData[0].category)) {
         finalData = filter ? defaultProducts.filter(p => p.category === filter) : defaultProducts;
       }
-
       setProducts(finalData.filter(p => !isDataCenterProduct(p)));
     } catch (error) {
-      console.error('Error fetching products, using fallback data:', error);
       setProducts(filter ? defaultProducts.filter(p => p.category === filter && !isDataCenterProduct(p)) : defaultProducts.filter(p => !isDataCenterProduct(p)));
     } finally {
       setLoading(false);
@@ -108,9 +106,10 @@ export default function Products() {
   return (
     <div className="page-products">
       <SEO
-        title="Buy Premium Laptops, Desktops & IT Hardware | Fizi Telecom"
-        description="Shop enterprise-grade technology hardware including premium laptops, workstation desktops, network printers, and accessories. Fast delivery and installation in Fizi, DRC."
+        title="Buy Laptops, Desktops & IT Hardware in Fizi DRC | Fizi Telecom"
+        description="Shop enterprise-grade technology hardware at Fizi Telecom: premium laptops, workstation desktops, network printers, and accessories from HP, Dell, Lenovo & more. Fast delivery and installation in Fizi, DRC."
         canonical="/products"
+        keywords="buy laptops Fizi DRC, HP Dell Lenovo, enterprise printers, workstation desktops, IT hardware Fizi, desktop accessories, tech store DRC"
       />
       <section className="page-hero">
         <div className="page-hero__bg" />
@@ -175,7 +174,7 @@ export default function Products() {
                     <div style={{ width: '100%', height: '180px', position: 'relative', overflow: 'hidden' }}>
                       <img
                         src={imgUrl}
-                        alt={product.name}
+                        alt={`${product.name}${product.brand ? ` by ${product.brand}` : ''} — available at Fizi Telecom, Fizi DRC`}
                         loading="lazy"
                         decoding="async"
                         width="400"
@@ -216,6 +215,15 @@ export default function Products() {
             <h2 className="section-title">Core Product Lines</h2>
           </div>
         </FadeIn>
+        {/* ── Internal link to Services ── */}
+        <FadeIn>
+          <div style={{ textAlign: 'center', marginTop: 64, padding: '40px 32px', background: 'rgba(0,87,217,0.06)', borderRadius: 16, border: '1px solid rgba(0,87,217,0.12)' }}>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: 10 }}>Need Installation or IT Support?</h2>
+            <p style={{ color: 'var(--text-gray)', marginBottom: 20, fontSize: '0.95rem' }}>Our engineers install and configure all hardware we supply. Explore our full range of IT services.</p>
+            <Link to="/services" className="hero__btn hero__btn--primary" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 28px', borderRadius: 30, background: 'linear-gradient(135deg,#0057d9,#0072ff)', color: '#fff', fontWeight: 600, textDecoration: 'none' }}>View All Services →</Link>
+          </div>
+        </FadeIn>
+
         <div className="featured-grid">
           {featured.map((s, i) => (
             <FadeIn key={s.title} delay={i * 0.06}>
