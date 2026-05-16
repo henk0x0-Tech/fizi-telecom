@@ -308,9 +308,10 @@ export default function Home() {
   return (
     <div className="home-page">
       <SEO
-        title="Fizi Telecom | Fiber Internet, Enterprise IT & Security Solutions"
-        description="Fizi Telecom is a premier provider of FTTH fiber internet, enterprise network architecture, CCTV security systems, and managed IT services in Fizi, DRC."
+        title="Fiber Internet, CCTV & Enterprise IT Solutions"
+        description="High-speed fiber internet, enterprise networking, CCTV surveillance & managed IT services in Fizi, DRC. Get a free quote — call +243 976359001."
         canonical="/"
+        keywords="Fizi Telecom, fiber internet Fizi, FTTH DRC, CCTV installation, enterprise networking, IT support, Baraka Fizi, South Kivu"
       />
 
       {/* ═══ HERO ═══ */}
