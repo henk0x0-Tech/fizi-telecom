@@ -172,7 +172,16 @@ export default function Products() {
               return (
                 <FadeIn key={product._id || product.id || i} delay={i * 0.04}>
                   <div className="product-card" style={{ padding: 0, overflow: 'hidden' }}>
-                    <div style={{ width: '100%', height: '180px', backgroundImage: `url("${imgUrl}")`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
+                    <div style={{ width: '100%', height: '180px', position: 'relative', overflow: 'hidden' }}>
+                      <img
+                        src={imgUrl}
+                        alt={product.name}
+                        loading="lazy"
+                        decoding="async"
+                        width="400"
+                        height="180"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }}
+                      />
                       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,25,47,0.9), transparent)' }} />
                       <div style={{ position: 'absolute', bottom: '16px', left: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <div className="product-card__icon" style={{ background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(4px)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}><IconComp size={20} /></div>

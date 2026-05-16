@@ -8,7 +8,7 @@ import {
   Star, ChevronRight, Zap, TrendingUp, Users, Clock,
   ToggleLeft, ToggleRight, Sparkles, Activity, User
 } from 'lucide-react';
-import heroBg from '../assets/hero-bg.jpeg';
+import heroBg from '../assets/hero-bg.webp';
 import SEO from '../components/SEO';
 import '../styles/Home.css';
 
@@ -159,9 +159,9 @@ const stats = [
 ];
 
 const solutions = [
-  { icon: Building2, title: 'Business Connectivity', image: '/images/business_connectivity.png', desc: 'Enterprise-grade connectivity solutions with dedicated fiber links, SD-WAN orchestration, and multi-site networking for mission-critical operations.', features: ['Dedicated Fiber', 'SD-WAN', 'Multi-Site VPN', 'QoS Management'] },
-  { icon: HomeIcon, title: 'Smart Home Integration', image: '/images/smart_home_integration.png', desc: 'Seamless home automation platforms connecting lighting, security, climate, entertainment, and energy management into a unified ecosystem.', features: ['Home Automation', 'Smart Security', 'Voice Control', 'Energy Management'] },
-  { icon: Globe, title: 'Smart City Infrastructure', image: '/images/smart_city_infrastructure.png', desc: 'End-to-end smart city deployments integrating IoT sensors, intelligent traffic management, environmental monitoring, and connected public services.', features: ['IoT Sensor Networks', 'Traffic Management', 'Environmental Monitoring', 'Public Wi-Fi'] },
+  { icon: Building2, title: 'Business Connectivity', image: '/images/business_connectivity.webp', desc: 'Enterprise-grade connectivity solutions with dedicated fiber links, SD-WAN orchestration, and multi-site networking for mission-critical operations.', features: ['Dedicated Fiber', 'SD-WAN', 'Multi-Site VPN', 'QoS Management'] },
+  { icon: HomeIcon, title: 'Smart Home Integration', image: '/images/smart_home_integration.webp', desc: 'Seamless home automation platforms connecting lighting, security, climate, entertainment, and energy management into a unified ecosystem.', features: ['Home Automation', 'Smart Security', 'Voice Control', 'Energy Management'] },
+  { icon: Globe, title: 'Smart City Infrastructure', image: '/images/smart_city_infrastructure.webp', desc: 'End-to-end smart city deployments integrating IoT sensors, intelligent traffic management, environmental monitoring, and connected public services.', features: ['IoT Sensor Networks', 'Traffic Management', 'Environmental Monitoring', 'Public Wi-Fi'] },
 ];
 
 const testimonials = [
@@ -513,7 +513,16 @@ export default function Home() {
                     <Link to="/services" className="sol-card__link">Explore Solution <ArrowRight size={15} /></Link>
                   </div>
                   <div className="sol-card__visual" style={{ padding: 0, borderRadius: 'var(--radius-xl)', overflow: 'hidden', position: 'relative' }}>
-                    <div style={{ position: 'absolute', inset: 0, backgroundImage: `url("${sol.image}")`, backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform 0.5s ease' }} className="sol-card__img-bg" />
+                    <img
+                      src={sol.image}
+                      alt={sol.title}
+                      loading="lazy"
+                      decoding="async"
+                      width="600"
+                      height="400"
+                      className="sol-card__img-bg"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }}
+                    />
                     <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(10,25,47,0.3), rgba(0,0,0,0.7))' }} />
                   </div>
                 </div>

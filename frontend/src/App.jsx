@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 import ScrollToTop from './components/ScrollToTop';
+import { AdminAuthProvider } from './context/AdminAuthContext';
 
 const Home = lazy(() => import('./pages/Home'));
 const Services = lazy(() => import('./pages/Services'));
@@ -32,7 +33,6 @@ function AppContent() {
       const progress = totalHeight > 0 ? (window.scrollY / totalHeight) : 0;
       setScrollProgress(progress);
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isAdmin]);
@@ -50,10 +50,7 @@ function AppContent() {
   return (
     <>
       <ScrollToTop />
-      <div
-        className="scroll-progress"
-        style={{ transform: `scaleX(${scrollProgress})` }}
-      />
+      <div className="scroll-progress" style={{ transform: `scaleX(${scrollProgress})` }} />
       <Header />
       <main>
         <Suspense fallback={<LoadingFallback />}>
@@ -74,9 +71,11 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <AdminAuthProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </AdminAuthProvider>
   );
 }
 

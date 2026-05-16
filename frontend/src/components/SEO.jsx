@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 
 const BASE_URL = 'https://fizitelecom.com';
-const DEFAULT_IMAGE = `${BASE_URL}/og-image.jpg`;
+const DEFAULT_IMAGE = `${BASE_URL}/og-image.webp`;
 const SITE_NAME = 'Fizi Telecom';
 
 /**
@@ -57,7 +57,7 @@ export default function SEO({
             "name": SITE_NAME,
             "logo": {
               "@type": "ImageObject",
-              "url": `${BASE_URL}/logo.png`
+              "url": `${BASE_URL}/logo.webp`
             }
           }
         })}

@@ -26,6 +26,10 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: false,
     minify: 'terser',
+    // Inline assets smaller than 4KB as base64 to save requests
+    assetsInlineLimit: 4096,
+    // Warn if a chunk exceeds 600KB
+    chunkSizeWarningLimit: 600,
     terserOptions: {
       compress: {
         drop_console: true,
@@ -34,8 +38,14 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
+        // Content-hash filenames for long-term caching on Vercel CDN
+        assetFileNames: 'assets/[name]-[hash][extname]',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
         manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom', 'framer-motion', 'lucide-react', 'react-helmet-async']
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          motion: ['framer-motion'],
+          ui: ['lucide-react', 'react-helmet-async']
         }
       }
     }

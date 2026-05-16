@@ -1,258 +1,158 @@
-import { useState, useEffect, useRef } from 'react';
-import { Eye, EyeOff, Loader2, User, Lock, Shield, Wifi } from 'lucide-react';
-import { login, setToken } from '../../utils/api';
-import './AdminLogin.css';
+import { useState, useEffect } from 'react';
+import { useAdminAuth } from '../../context/AdminAuthContext';
 
-/* ── Animated particle canvas background ── */
-function ParticleCanvas() {
-  const canvasRef = useRef(null);
+function LockoutTimer({ until }) {
+  const [secs, setSecs] = useState(Math.max(0, Math.ceil((until - Date.now()) / 1000)));
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let rafId;
-    let particles = [];
-
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    const init = () => {
-      particles = [];
-      const count = Math.min(60, Math.floor((canvas.width * canvas.height) / 18000));
-      for (let i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3,
-          r: Math.random() * 1.5 + 0.4,
-          opacity: Math.random() * 0.4 + 0.1,
-        });
-      }
-    };
-
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      /* Grid lines */
-      ctx.strokeStyle = 'rgba(0,150,255,0.03)';
-      ctx.lineWidth = 1;
-      const gridSize = 60;
-      for (let x = 0; x < canvas.width; x += gridSize) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
-      }
-      for (let y = 0; y < canvas.height; y += gridSize) {
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
-      }
-
-      /* Particles */
-      particles.forEach(p => {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0,180,255,${p.opacity})`;
-        ctx.fill();
-      });
-
-      /* Connections */
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(0,140,255,${0.08 * (1 - dist / 120)})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      }
-
-      rafId = requestAnimationFrame(draw);
-    };
-
-    resize(); init(); draw();
-    window.addEventListener('resize', () => { resize(); init(); });
-    return () => { cancelAnimationFrame(rafId); };
-  }, []);
-
-  return <canvas ref={canvasRef} className="aln-canvas" aria-hidden="true" />;
+    if (secs <= 0) return;
+    const id = setInterval(() => setSecs(s => Math.max(0, s - 1)), 1000);
+    return () => clearInterval(id);
+  }, [until]);
+  const m = Math.floor(secs / 60);
+  const s = secs % 60;
+  return <span>{m}:{String(s).padStart(2, '0')}</span>;
 }
 
-/* ── Floating label input ── */
-function FloatingInput({ id, type, value, onChange, label, icon: Icon, rightSlot, autoFocus }) {
-  const [focused, setFocused] = useState(false);
-  const lifted = focused || value.length > 0;
-  return (
-    <div className={`aln-field ${focused ? 'aln-field--focused' : ''}`}>
-      <div className="aln-field__icon"><Icon size={17} /></div>
-      <div className="aln-field__inner">
-        <label htmlFor={id} className={`aln-field__label ${lifted ? 'aln-field__label--lifted' : ''}`}>
-          {label}
-        </label>
-        <input
-          id={id}
-          type={type}
-          value={value}
-          autoFocus={autoFocus}
-          autoComplete={type === 'password' ? 'current-password' : 'username'}
-          onChange={onChange}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          className="aln-field__input"
-          required
-        />
-      </div>
-      {rightSlot && <div className="aln-field__right">{rightSlot}</div>}
-    </div>
-  );
-}
+export default function AdminLogin() {
+  const { login, lockout } = useAdminAuth();
+  const [username, setUsername]   = useState('');
+  const [password, setPassword]   = useState('');
+  const [error, setError]         = useState('');
+  const [loading, setLoading]     = useState(false);
+  const [remaining, setRemaining] = useState(null); // attempts left
 
-export default function AdminLogin({ onLogin }) {
-  const [form, setForm] = useState({ username: '', password: '' });
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [showPass, setShowPass] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => { const t = setTimeout(() => setMounted(true), 80); return () => clearTimeout(t); }, []);
+  // Clear error when user types
+  const onUser = v => { setUsername(v); setError(''); };
+  const onPass = v => { setPassword(v); setError(''); };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (lockout) return;
+    if (!username.trim() || !password.trim()) {
+      setError('Please fill in both fields.');
+      return;
+    }
     setLoading(true);
     setError('');
-    try {
-      const data = await login(form.username, form.password);
-      setToken(data.token);
-      onLogin(data.user);
-    } catch (err) {
-      setError(err.message || 'Invalid credentials. Please try again.');
-    } finally {
-      setLoading(false);
+    // Artificial delay — prevents timing-based brute-force
+    await new Promise(r => setTimeout(r, 700));
+    const result = login(username.trim(), password);
+    setLoading(false);
+
+    if (!result.ok) {
+      if (result.locked) {
+        setError('');
+      } else {
+        setRemaining(result.remaining);
+        setError(
+          result.remaining === 1
+            ? 'Invalid credentials. 1 attempt remaining before lockout.'
+            : `Invalid credentials. ${result.remaining} attempts remaining.`
+        );
+      }
     }
   };
 
+  const isLocked = !!lockout;
+
   return (
-    <div className="aln-root">
-      {/* ── Animated background ── */}
-      <ParticleCanvas />
+    <div className="adm-login-page">
+      {/* Animated background blobs */}
+      <div className="adm-login-blob adm-login-blob--1" />
+      <div className="adm-login-blob adm-login-blob--2" />
 
-      {/* ── Gradient orbs ── */}
-      <div className="aln-orb aln-orb--1" aria-hidden="true" />
-      <div className="aln-orb aln-orb--2" aria-hidden="true" />
-      <div className="aln-orb aln-orb--3" aria-hidden="true" />
-
-      {/* ── Login card ── */}
-      <div className={`aln-card ${mounted ? 'aln-card--in' : ''}`} role="main">
-
-        {/* Top bar */}
-        <div className="aln-card__topbar">
-          <div className="aln-topbar__dot aln-topbar__dot--red" />
-          <div className="aln-topbar__dot aln-topbar__dot--yellow" />
-          <div className="aln-topbar__dot aln-topbar__dot--green" />
-          <span className="aln-topbar__label">
-            <Wifi size={11} /> SECURE CONNECTION
-          </span>
+      <div className="adm-login-card">
+        {/* Brand */}
+        <div className="adm-login-brand">
+          <div className="adm-login-logo-ring">
+            <div className="adm-login-logo-icon">F</div>
+          </div>
+          <div>
+            <h1 className="adm-login-title">Owner Portal</h1>
+            <p className="adm-login-sub">Fizi Telecom · Secure Access</p>
+          </div>
         </div>
 
-        {/* Shield icon + branding */}
-        <div className="aln-header">
-          <div className="aln-shield-wrap">
-            <div className="aln-shield-ring aln-shield-ring--outer" />
-            <div className="aln-shield-ring aln-shield-ring--inner" />
-            <div className="aln-shield-icon">
-              <Shield size={30} strokeWidth={1.5} />
+        {/* Lockout banner */}
+        {isLocked && (
+          <div className="adm-login-lockout">
+            <span className="adm-login-lockout__icon">🔒</span>
+            <div>
+              <strong>Access Locked</strong>
+              <p>Too many failed attempts. Try again in <LockoutTimer until={lockout.until} />.</p>
             </div>
-          </div>
-          <div className="aln-brand">
-            <h1 className="aln-brand__title">Admin Portal</h1>
-            <p className="aln-brand__sub">Fizi Telecom · Control Panel</p>
-          </div>
-        </div>
-
-        {/* Divider */}
-        <div className="aln-divider">
-          <span>AUTHENTICATION REQUIRED</span>
-        </div>
-
-        {/* Error message */}
-        {error && (
-          <div className="aln-error" role="alert">
-            <span className="aln-error__dot" />
-            {error}
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="aln-form" noValidate>
-          <FloatingInput
-            id="aln-username"
-            type="text"
-            value={form.username}
-            onChange={e => setForm({ ...form, username: e.target.value })}
-            label="Username"
-            icon={User}
-            autoFocus
-          />
+        {!isLocked && (
+          <form className="adm-login-form" onSubmit={handleSubmit} autoComplete="off">
+            {error && (
+              <div className="adm-login-error" role="alert">
+                <span>⚠️</span> {error}
+              </div>
+            )}
 
-          <FloatingInput
-            id="aln-password"
-            type={showPass ? 'text' : 'password'}
-            value={form.password}
-            onChange={e => setForm({ ...form, password: e.target.value })}
-            label="Password"
-            icon={Lock}
-            rightSlot={
-              <button
-                type="button"
-                className="aln-toggle-pass"
-                onClick={() => setShowPass(v => !v)}
-                aria-label={showPass ? 'Hide password' : 'Show password'}
-              >
-                {showPass ? <EyeOff size={17} /> : <Eye size={17} />}
-              </button>
-            }
-          />
+            <div className="adm-login-field">
+              <label className="adm-login-label" htmlFor="adm-username">Username</label>
+              <div className="adm-login-input-wrap">
+                <span className="adm-login-input-icon">👤</span>
+                <input
+                  id="adm-username"
+                  className="adm-login-input"
+                  type="text"
+                  placeholder="Enter your username"
+                  value={username}
+                  onChange={e => onUser(e.target.value)}
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  autoComplete="off"
+                  disabled={loading}
+                  required
+                />
+              </div>
+            </div>
 
-          {/* Forgot password */}
-          <div className="aln-forgot-row">
-            <button type="button" className="aln-forgot-btn">Forgot Password?</button>
-          </div>
+            <div className="adm-login-field">
+              <label className="adm-login-label" htmlFor="adm-password">Password</label>
+              <div className="adm-login-input-wrap">
+                <span className="adm-login-input-icon">🔑</span>
+                <input
+                  id="adm-password"
+                  className="adm-login-input"
+                  type="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={e => onPass(e.target.value)}
+                  autoComplete="current-password"
+                  disabled={loading}
+                  required
+                />
+              </div>
+            </div>
 
-          {/* Sign In button */}
-          <button
-            type="submit"
-            className={`aln-submit ${loading ? 'aln-submit--loading' : ''}`}
-            disabled={loading}
-          >
-            <span className="aln-submit__bg" />
-            <span className="aln-submit__content">
-              {loading ? (
-                <><Loader2 size={18} className="aln-spinner" /> Authenticating…</>
-              ) : (
-                <>Sign In &nbsp;→</>
-              )}
-            </span>
-          </button>
-        </form>
+            <button
+              className="adm-login-btn"
+              type="submit"
+              disabled={loading || isLocked}
+            >
+              {loading
+                ? <><span className="adm-spinner adm-spinner--sm" /> Verifying…</>
+                : <><span>🔐</span> Sign In to Dashboard</>
+              }
+            </button>
 
-        {/* Footer */}
-        <div className="aln-footer">
-          <div className="aln-footer__badge">
-            <Shield size={12} />
-            <span>Secure Admin Access &nbsp;·&nbsp; SSL Encrypted</span>
-          </div>
-          <p className="aln-footer__legal">
-            Unauthorized access is strictly prohibited and may be prosecuted.
-          </p>
-        </div>
+            {remaining !== null && !error.includes('Invalid') && (
+              <p style={{ textAlign:'center', fontSize:'0.72rem', color:'rgba(239,68,68,0.7)', marginTop:8 }}>
+                {remaining} attempt{remaining !== 1 ? 's' : ''} remaining
+              </p>
+            )}
+          </form>
+        )}
+
+        <p className="adm-login-footer-note">
+          🛡️ Protected · Session expires after 8 hours
+        </p>
       </div>
     </div>
   );

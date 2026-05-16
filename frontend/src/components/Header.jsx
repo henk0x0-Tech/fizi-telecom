@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import AnnouncementBar from './AnnouncementBar';
-import logo from '../assets/logo.jpeg';
+import logo from '../assets/logo.webp';
 import '../styles/Header.css';
 
 export default function Header() {
@@ -44,7 +44,15 @@ export default function Header() {
         <div className="header__inner">
           {/* Logo */}
           <Link to="/" className="header__logo" aria-label="Fizi Telecom Home">
-            <img className="header__logo-img" src={logo} alt="Fizi Telecom" />
+            <img
+              className="header__logo-img"
+              src={logo}
+              alt="Fizi Telecom"
+              width="120"
+              height="40"
+              fetchpriority="high"
+              decoding="async"
+            />
           </Link>
 
           {/* Desktop Navigation */}
